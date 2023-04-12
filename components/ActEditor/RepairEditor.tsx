@@ -11,7 +11,7 @@ import { WorkTable } from "./WorkTable";
 
 interface Props {
   type: RepairType;
-  replaceRepair: (id: string, value: Repair) => void;
+  replaceRepair: (id: string, value?: Repair) => void;
   repair: Repair;
 
   setRepairObjects: (value: RepairObject[]) => void;
@@ -99,6 +99,14 @@ export const RepairEditor: FC<Props> = ({
           { label: "Итого по работам", value: getRepairPrice(repair) },
         ]}
       />
+      <button
+        className="text-red-600"
+        onClick={() => {
+          replaceRepair(repair.id);
+        }}
+      >
+        Удалить
+      </button>
     </>
   );
 };

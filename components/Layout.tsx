@@ -43,7 +43,6 @@ export const Layout: FC<Props> = ({ children, className }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(router.pathname);
     router.pathname === "/404" && router.push("/acts");
   }, [router]);
 

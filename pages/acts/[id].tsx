@@ -23,83 +23,44 @@ const Page = () => {
 
   const [selectedRepair, setSelectedRepair] = useState<Repair | null>(null);
 
-  // useEffect(() => {
-  //   console.log(act);
-  // }, [act]);
+  useEffect(() => {
+    console.log(act);
+  }, [act]);
 
-  const replaceArrItem = (
-    items: any[],
-    id: string,
-    itemAttributes?: object
-  ) => {
-    var index = items.findIndex((x) => x.id === id);
-    return [
-      ...items.slice(0, index),
-      ...(itemAttributes
-        ? [Object.assign({}, items[index], itemAttributes)]
-        : []),
-      ...items.slice(index + 1),
-    ];
-  };
-
-  const replaceRepair = (id: string, newRepair: Repair) =>
+  const replaceRepair = (id: string, newRepair?: Repair) =>
     setAct((prevState) => {
-      console.log("hui", {
-        ...prevState,
-        ППР: {
-          ...prevState.ППР,
-          ремонты: prevState.ППР.ремонты.map((x) =>
-            x.id === id ? newRepair : x
-          ),
-        },
-      });
-      return {
-        ...prevState,
-        ППР: {
-          ...prevState.ППР,
-          ремонты: prevState.ППР.ремонты.map((x) =>
-            x.id === id ? newRepair : x
-          ),
-        },
-      };
+      if (newRepair) {
+        const index = prevState.ППР.ремонты.findIndex((x) => x.id === id);
+        Object.assign(prevState.ППР.ремонты[index], newRepair);
+        return {
+          ...prevState,
+        };
+      } else
+        return {
+          ...prevState,
+          ППР: {
+            ...prevState.ППР,
+            ремонты: prevState.ППР.ремонты.filter((x) => x.id !== id),
+          },
+        };
     });
 
-  const replaceRepairObject = (newObject?: RepairObject) =>
-    setAct((prevState) => ({
-      ...prevState,
-      ППР: {
-        ...prevState.ППР,
-        ремонты: [
-          ...prevState.ППР.ремонты.filter(
-            (repair) => repair.id !== selectedRepair?.id
-          ),
-          {
-            ...selectedRepair!,
-            объектыРемонта: [
-              ...selectedRepair!.объектыРемонта,
-              ...(newObject ? [newObject] : []),
-            ],
-          },
-        ],
-      },
-    }));
+  const replaceRepairObject = (id: string, newObject: RepairObject) => {
+    if (selectedRepair) {
+      const index = selectedRepair?.объектыРемонта.findIndex(
+        (x) => x.id === id
+      );
+      Object.assign(selectedRepair?.объектыРемонта[index], newObject);
+      replaceRepair(selectedRepair.id, selectedRepair);
+    }
+  };
 
-  const setRepairObjects = (newRepairObjects: RepairObject[]) =>
-    setAct((prevState) => ({
-      ...prevState,
-      ППР: {
-        ...prevState.ППР,
-        ремонты: [
-          ...prevState.ППР.ремонты.filter(
-            (repair) => repair.id !== selectedRepair?.id
-          ),
-          {
-            ...selectedRepair!,
-            объектыРемонта: newRepairObjects,
-          },
-        ],
-      },
-    }));
+  const replaceRepairObjects = (newRepairObjects: RepairObject[]) =>
+    selectedRepair &&
+    replaceRepair(selectedRepair.id, {
+      ...selectedRepair!,
+      объектыРемонта: newRepairObjects,
+    });
 
   return (
     <>
@@ -124,7 +85,7 @@ const Page = () => {
             repair={selectedRepair}
             replaceRepair={replaceRepair}
             replaceRepairObject={replaceRepairObject}
-            setRepairObjects={setRepairObjects}
+            setRepairObjects={replaceRepairObjects}
           />
         </Dialog>
       )}

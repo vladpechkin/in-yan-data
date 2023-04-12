@@ -9,7 +9,7 @@ import { Input } from "../Equix/Input";
 interface Props {
   repairObjects: RepairObject[];
   setRepairObjects: (value: RepairObject[]) => void;
-  replaceRepairObject: (value?: RepairObject) => void;
+  replaceRepairObject: (id: string, value?: RepairObject) => void;
 }
 
 export const RepairObjectTable: FC<Props> = ({
@@ -38,7 +38,10 @@ export const RepairObjectTable: FC<Props> = ({
               )}
               minOptions={1}
               onChange={(value: InputOption) =>
-                replaceRepairObject({ ...object, корпус: value.name })
+                replaceRepairObject(object.id, {
+                  ...object,
+                  корпус: value.name,
+                })
               }
             />
           </td>
@@ -50,7 +53,7 @@ export const RepairObjectTable: FC<Props> = ({
                 object.оборудование.includes(machine.name)
               )}
               onChange={(value: InputOption[]) =>
-                replaceRepairObject({
+                replaceRepairObject(object.id, {
                   ...object,
                   оборудование: value.map(({ name }) => name),
                 })
@@ -63,7 +66,7 @@ export const RepairObjectTable: FC<Props> = ({
             <button
               className="text-red-600 w-full text-center"
               onClick={() => {
-                replaceRepairObject();
+                // replaceRepairObject();
               }}
             >
               Удалить
