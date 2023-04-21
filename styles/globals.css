@@ -36,4 +36,8 @@
     @apply sticky bottom-0 bg-white;
     box-shadow: 0 -2px 2px -2px rgb(209 213 219);
   }
+
+  tr td {
+    background-color: inherit;
+  }
 }

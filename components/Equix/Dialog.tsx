@@ -19,6 +19,7 @@ export const Dialog: FC<Props> = ({
   const router = useRouter();
 
   useEffect(() => {
+    // @ts-ignore
     router.beforePopState(({ as }) => {
       if (as !== router.asPath) {
         window.history.pushState(null, "", router.asPath);

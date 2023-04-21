@@ -138,7 +138,10 @@ export const getEmptyAct = (): Act => ({
     ремонты: [],
   },
   выделен: false,
-  отчетныйПериод: new Date().toISOString(),
+  отчетныйПериод: new Date().toLocaleDateString("ru", {
+    month: "2-digit",
+    year: "2-digit",
+  }),
   примечание: "",
   производство: "",
   состояние: actStates[0],

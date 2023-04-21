@@ -28,6 +28,7 @@ export const Radio: FC<RadioProps> = ({
   const handleChange = (option: InputOption) => {
     if (minOptions === 1 && value?.id === option.id) return;
 
+    // @ts-ignore
     onChange(value?.id === option.id ? null : option);
 
     if (isDialogOpen) setIsDialogOpen(false);

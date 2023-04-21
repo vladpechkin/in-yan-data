@@ -14,18 +14,16 @@ export const NavItem: FC<Props> = ({ name, url }) => {
     (url === "/" && router.pathname === url) ||
     (url !== "/" && router.asPath.includes(url));
 
-  const Element = isActive ? "div" : Link;
-
   return (
     <li>
-      <Element
+      <Link
         className={`flex items-center whitespace-nowrap ${
-          isActive ? "font-semibold" : ""
+          isActive ? "font-semibold text-black" : ""
         }`}
         href={url}
       >
         {name}
-      </Element>
+      </Link>
     </li>
   );
 };

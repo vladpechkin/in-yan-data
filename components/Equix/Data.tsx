@@ -8,7 +8,7 @@ interface Props {
 export const Data: FC<Props> = ({ label, value }) =>
   value ? (
     <label className="flex flex-col">
-      <span>{label}</span>
+      <span className="font-medium">{label}</span>
       {value.toString()}
     </label>
   ) : null;

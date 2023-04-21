@@ -1,19 +1,35 @@
 import { getEmptyWork, measurementUnits } from "@/consts";
-import { InputOption, RepairType, Work } from "@/types";
-import { getWorks, toOptions } from "@/utils";
-import { FC } from "react";
+import { useStore } from "@/pages/_app";
+import { InputOption, Repair, Work } from "@/types";
+import {
+  getRepairDescription,
+  getRepairPrice,
+  getWorks,
+  toOptions,
+} from "@/utils";
+import { observer } from "mobx-react";
 import { Input } from "../Equix/Input";
 
-interface Props {
-  works: Work[];
-  setWorks: (value: Work[]) => void;
-  type: RepairType;
-}
+export const WorkTable = observer(() => {
+  const {
+    selectedRepair,
+    setSelectedRepair,
+    createWork,
+    deleteWork,
+    updateWork,
+    selectedRepairType,
+    getSelectedWorks,
+  } = useStore();
 
-export const WorkTable: FC<Props> = ({ type, works, setWorks }) => {
   const workOptions = toOptions(
-    getWorks(type).map((work: any) => work["Содержание работ"])
+    getWorks(selectedRepairType).map((work: any) => work["Содержание работ"])
   );
+
+  const updateDescription = () =>
+    setSelectedRepair({
+      описание: getRepairDescription(selectedRepair, selectedRepairType),
+    });
+
   return (
     <table className="w-full">
       <tbody>
@@ -24,9 +40,9 @@ export const WorkTable: FC<Props> = ({ type, works, setWorks }) => {
           <th>Тип работы</th>
           <th>Кол-во</th>
           <th>Ед. изм.</th>
-          <th>Действия</th>
+          {(selectedRepair as Repair).работы.length > 1 && <th>Действия</th>}
         </tr>
-        {works.map((work, index) => (
+        {(selectedRepair as Repair).работы.map((work, index) => (
           <tr key={index}>
             <td>
               <Input
@@ -36,62 +52,78 @@ export const WorkTable: FC<Props> = ({ type, works, setWorks }) => {
                   work["Содержание работ"].includes(option.name)
                 )}
                 isCollapsed
-                onChange={(value: InputOption) =>
-                  setWorks(
-                    works
-                      .filter(({ id }) => id !== work.id)
-                      .concat({
-                        ...work,
-                        "Содержание работ": value.name,
-                      })
-                  )
-                }
+                onChange={(value: InputOption) => {
+                  updateWork(work.id, {
+                    ...work,
+                    "Содержание работ": value.name,
+                    цена: getWorks(selectedRepairType).find((work: Work) =>
+                      work["Содержание работ"].includes(value.name)
+                    )["Стоимость"],
+                  });
+                  console.log(
+                    getRepairPrice(selectedRepair, selectedRepairType)
+                  );
+                  updateDescription();
+                }}
               />
             </td>
             <td className="w-20">
-              {type === "ППР" ? (
+              {selectedRepairType === "ППР" ? (
                 "1"
               ) : (
                 <Input
                   type="text"
                   size={4}
                   value={work.количество.toString()}
-                  onChange={(value: string) =>
-                    setWorks(
-                      works
-                        .filter(({ id }) => id !== work.id)
-                        .concat({ ...work, количество: parseInt(value) })
-                    )
-                  }
+                  onChange={(value: string) => {
+                    updateWork(work.id, {
+                      ...work,
+                      количество: parseInt(value),
+                    });
+                    updateDescription();
+                  }}
                 />
               )}
             </td>
             <td className="w-16">
-              {type === "ППР" ? (
+              {selectedRepairType === "ППР" ? (
                 "шт."
               ) : (
-                <Input type="radio" options={toOptions(measurementUnits)} />
+                <Input
+                  type="radio"
+                  options={toOptions(measurementUnits)}
+                  value={toOptions(measurementUnits).find((option) =>
+                    work.единицаИзмерения.includes(option.name)
+                  )}
+                  onChange={(value: InputOption) => {
+                    updateWork(work.id, {
+                      ...work,
+                      единицаИзмерения: value.name,
+                    });
+                    updateDescription();
+                  }}
+                />
               )}
             </td>
 
-            <td className="w-20">
-              <button
-                className="text-red-600 w-full text-center"
-                onClick={() => {
-                  setWorks(works.filter(({ id }) => id !== work.id));
-                }}
-              >
-                Удалить
-              </button>
-            </td>
+            {(selectedRepair as Repair).работы.length > 1 && (
+              <td className="w-20">
+                <button
+                  className="text-red-600 w-full text-center"
+                  onClick={() => {
+                    deleteWork(work.id);
+                    updateDescription();
+                  }}
+                >
+                  Удалить
+                </button>
+              </td>
+            )}
           </tr>
         ))}
         <tr>
           <td colSpan={100}>
-            <button
-              className="w-full"
-              onClick={() => setWorks(works.concat(getEmptyWork()))}
-            >
+            <button className="w-full" onClick={() => createWork()}>
               Добавить
             </button>
           </td>
@@ -99,4 +131,4 @@ export const WorkTable: FC<Props> = ({ type, works, setWorks }) => {
       </tbody>
     </table>
   );
-};
+});

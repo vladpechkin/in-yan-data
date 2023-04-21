@@ -1,5 +1,5 @@
 import { prejskuranti } from "@/consts";
-import { Machine, RepairType } from "@/types";
+import { Machine, RepairObject, RepairType, Work } from "@/types";
 import { read, utils, WorkSheet, writeFile } from "xlsx";
 import otr from "./public/prices-otr.json";
 import ppr from "./public/prices-ppr.json";
@@ -58,104 +58,43 @@ export const editCell = (
     origin: cell,
   });
 
-export const overwriteAct = (act: Act) => {
-  fetch(`/in.xls`)
-    .then((res) => res.arrayBuffer())
-    .then((res) => {
-      const file = read(new Uint8Array(res), {
-        type: "array",
-      });
-      const worksheet = file.Sheets[file.SheetNames[0]];
-
-      const hasPpr = act.ППР.ремонты.length > 0;
-      const hasOtr = act.ОТР.ремонты.length > 0;
-
-      const pprOrders = `согласно заказа по ППР ${act.ППР.наряды}`;
-      const otrOrders = `согласно заказа по О(Т)Р ${act.ППР.наряды}`;
-
-      editCell(worksheet, "B16", hasPpr ? pprOrders : otrOrders);
-
-      hasPpr && hasOtr && editCell(worksheet, "B17", otrOrders);
-
-      const pprHeading = `${
-        hasOtr ? "Ι. " : ""
-      }Планово-предупредительный ремонт`;
-      const otrHeading = `${hasPpr ? "ΙΙ. " : ""}Оперативный (текущий) ремонт`;
-
-      editCell(worksheet, "B22", hasPpr ? pprHeading : otrHeading);
-
-      if (hasPpr) {
-        const index = 0;
-        const repair = act.ППР.ремонты[index];
-        // act.ППР.ремонты.map((repair, index) => {
-        editCell(worksheet, `B${23 + index}`, (index + 1).toString());
-        editCell(
-          worksheet,
-          `D${23 + index}`,
-          getRepairDescription(repair, "ППР")
-        );
-        editCell(
-          worksheet,
-          `AD${23 + index}`,
-          getRepairPrice(repair).toString()
-        );
-        // });
-        editCell(
-          worksheet,
-          `D${25}`,
-          `Итого по планово-предупредительному ремонту`
-        );
-        editCell(worksheet, `AD${25}`, getRepairTypePrice(act.ППР).toString());
-      }
-
-      if (hasOtr) {
-        editCell(
-          worksheet,
-          `D${25}`,
-          `Итого по оперативному (текущему) ремонту`
-        );
-        editCell(worksheet, `AD${25}`, getRepairTypePrice(act.ППР).toString());
-      }
-
-      // B23+ - Номер ремонта
-      // C23+ - Описание ремонта
-      // U23+ - шт.
-      // X23+ - Сумма всех Работа["цена"]
-      // Z23+ - Количество оборудования в объектах ремонта
-      // AD23+ - Сумма всех Работа["сумма"]
-      // D38 - Итого по ТипРемонта
-      // AD38 - Сумма AD23:AD37
-      // AD42 - Сумма итогов по ТипРемонта
-      // AD43 - AD42*0.2
-      // AD44 - AD43*1.2
-      // AD45 - AD44
-      // A46 - Всего к оплате: тридцать, в т.ч.
-      writeFile(file, "out.xls");
-    });
-};
-
-export const getRepairPrice = (repair: Repair) => {
+export const getRepairPrice = (repair: Repair, type: RepairType) => {
   let price = 0;
-  repair.работы.map((work) => (price += work.количество * work.цена));
+  repair.работы.map((work) => {
+    const pricelistWork = getWorks(type).find(
+      (priceListWork: Work) =>
+        priceListWork["Содержание работ"] === work["Содержание работ"]
+    );
+    const цена = pricelistWork ? pricelistWork["Стоимость"] : 0;
+    price += цена;
+  });
   return price;
 };
 
-export const getRepairTypePrice = (repairType: {
-  наряды: string;
-  ремонты: Repair[];
-}) => {
+export const getRepairAmount = (repair: Repair) =>
+  repair.объектыРемонта
+    ?.map((объектРемонта: RepairObject) =>
+      объектРемонта?.оборудование?.map((оборудование) => оборудование)
+    )
+    .flat().length;
+
+export const getRepairsPrice = (repair: Repair, type: RepairType) =>
+  getRepairPrice(repair, type) * getRepairAmount(repair);
+
+export const getRepairTypePrice = (
+  repairType: {
+    наряды: string;
+    ремонты: Repair[];
+  },
+  type: RepairType
+) => {
   let price = 0;
-  repairType.ремонты.map((repair) => (price += getRepairPrice(repair)));
+  repairType.ремонты.map((repair) => (price += getRepairsPrice(repair, type)));
   return price;
 };
 
 export const getActPrice = (act: Act) =>
-  getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
-
-export const getWorksByMachine = (machine: Machine, type: RepairType) =>
-  type === "ППР"
-    ? ppr.find((price) => price.оборудование.includes(machine))?.работы
-    : otr;
+  getRepairTypePrice(act.ППР, "ППР") + getRepairTypePrice(act.ОТР, "ОТР");
 
 export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const machinery = repair?.объектыРемонта
@@ -174,8 +113,6 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
         .filter(Boolean)
     ),
   ].join(", ");
-
-  console.log(prices);
 
   const objs = repair.объектыРемонта
     .map(
@@ -204,3 +141,17 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
 
 export const getWorks = (type: RepairType): any[] =>
   type === "ППР" ? ppr.map(({ работы }) => работы).flat() : otr;
+
+export const getSeasonColor = (date: string) => {
+  const month = parseInt(date.slice(0, 2));
+  return month === 12 || month <= 2
+    ? "bg-blue-100"
+    : month >= 3 && month <= 5
+    ? "bg-pink-600"
+    : month >= 6 && month <= 8
+    ? "bg-green-50"
+    : "bg-orange-50";
+};
+
+export const sheet_to_aoa = (sheet: WorkSheet): unknown[][] =>
+  utils.sheet_to_json(sheet, { header: 1 });

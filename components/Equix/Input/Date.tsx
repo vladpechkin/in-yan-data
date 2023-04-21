@@ -27,7 +27,7 @@ export const DateInput: FC<DateProps> = ({
   const date = new Date();
   useEffect(() => {
     if (value) {
-      console.log(value);
+      // console.log(value);
       const a = new Date(value);
       setDay(a.getDate().toString());
       setMonth(a.getMonth().toString());

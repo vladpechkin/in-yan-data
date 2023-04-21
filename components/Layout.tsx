@@ -7,21 +7,21 @@ import { NavItem } from "./Equix/NavItem";
 
 const routes = [
   { name: "Акты", url: "/acts" },
-  {
-    name: "По производствам",
-    url: "/files/otchet-po-proizvodstvam.xls",
-    group: "Отчеты",
-  },
-  {
-    name: "По сотрудникам",
-    url: "/files/otchet-po-sotrudnikam.xls",
-    group: "Отчеты",
-  },
-  {
-    name: "По мастерам",
-    url: "/files/otchet-po-masteram.xls",
-    group: "Отчеты",
-  },
+  // {
+  //   name: "По производствам",
+  //   url: "/files/otchet-po-proizvodstvam.xls",
+  //   group: "Отчеты",
+  // },
+  // {
+  //   name: "По сотрудникам",
+  //   url: "/files/otchet-po-sotrudnikam.xls",
+  //   group: "Отчеты",
+  // },
+  // {
+  //   name: "По мастерам",
+  //   url: "/files/otchet-po-masteram.xls",
+  //   group: "Отчеты",
+  // },
   { name: "Производства", url: "/database/productions", group: "Справочники" },
   { name: "Корпуса", url: "/database/buildings", group: "Справочники" },
   { name: "Сотрудники", url: "/database/employees", group: "Справочники" },

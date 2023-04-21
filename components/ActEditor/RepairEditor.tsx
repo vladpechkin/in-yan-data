@@ -1,112 +1,111 @@
 import { areaOptions } from "@/options";
-import { InputOption, Repair, RepairObject, RepairType } from "@/types";
-import { getRepairDescription, getRepairPrice } from "@/utils";
-import { FC, useEffect } from "react";
+import { useStore } from "@/pages/_app";
+import { InputOption } from "@/types";
+import { getRepairAmount, getRepairDescription, getRepairPrice } from "@/utils";
+import { observer } from "mobx-react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Row } from "../Equix/Data";
+import { Dialog } from "../Equix/Dialog";
 import { Input } from "../Equix/Input";
 import { Textarea } from "../Equix/Textarea";
 import { RepairObjectTable } from "./RepairObjectTable";
 import { ShiftTable } from "./ShiftTable";
 import { WorkTable } from "./WorkTable";
 
-interface Props {
-  type: RepairType;
-  replaceRepair: (id: string, value?: Repair) => void;
-  repair: Repair;
+export const RepairEditor = observer(() => {
+  const {
+    selectedRepair,
+    setSelectedRepair,
+    selectedRepairType,
+    saveRepair,
+    deleteRepair,
+    setSelectedRepairType,
+  } = useStore();
 
-  setRepairObjects: (value: RepairObject[]) => void;
-  replaceRepairObject: (value?: RepairObject) => void;
-}
-
-export const RepairEditor: FC<Props> = ({
-  type,
-  repair,
-  replaceRepair,
-  replaceRepairObject,
-  setRepairObjects,
-}) => {
   useEffect(() => {
-    replaceRepair(repair.id, {
-      ...repair,
-      описание: getRepairDescription(repair, type),
+    setSelectedRepair({
+      описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
-  }, [
-    repair.доля,
-    repair.зона,
-    repair.объектыРемонта,
-    repair.работы,
-    repair.смены,
-  ]);
+  }, []);
+
+  const router = useRouter();
 
   return (
-    <>
+    <Dialog
+      title="Ремонт"
+      isOpen={!!selectedRepairType}
+      close={() => setSelectedRepairType(null)}
+      className="w-full h-full"
+    >
       <div className="flex gap-4">
         <Input
           type="radio"
           label="Зона"
           isCollapsed
           options={areaOptions}
-          value={areaOptions.find((option) => option.name === repair.зона)}
-          onChange={(value: InputOption) => {
-            console.log(repair);
-            replaceRepair(repair.id, { ...repair, зона: value.name });
-          }}
+          value={areaOptions.find(
+            (option) => option.name === selectedRepair.зона
+          )}
+          onChange={(value: InputOption) =>
+            setSelectedRepair({ зона: value.name })
+          }
         />
         <Input
           label="Доля пр-ва, %"
           size={2}
           className="self-start"
-          value={repair.доля.toString()}
+          value={selectedRepair.доля.toString()}
           onChange={(value: string) =>
-            replaceRepair(repair.id, { ...repair, доля: parseInt(value) })
+            setSelectedRepair({ доля: parseInt(value) })
           }
         />
       </div>
-      <RepairObjectTable
-        repairObjects={repair.объектыРемонта}
-        replaceRepairObject={replaceRepairObject}
-        setRepairObjects={setRepairObjects}
-      />
-      <ShiftTable
-        shifts={repair.смены}
-        setShifts={(shifts) =>
-          replaceRepair(repair.id, { ...repair, смены: shifts })
-        }
-      />
-      <WorkTable
-        works={repair.работы}
-        setWorks={(works) =>
-          replaceRepair(repair.id, { ...repair, работы: works })
-        }
-        type={type}
-      />
+      <RepairObjectTable />
+      <ShiftTable />
+      <WorkTable />
       <Textarea
         label="Описание ремонта"
         className="h-40"
-        value={repair.описание}
-        onChange={(value: string) =>
-          replaceRepair(repair.id, { ...repair, описание: value })
-        }
+        value={selectedRepair.описание}
+        onChange={(value: string) => setSelectedRepair({ описание: value })}
       />
       <Row
         {...[
           {
             label: "Кол-во оборудования",
-            value: repair.объектыРемонта?.map((объектРемонта) =>
-              объектРемонта?.оборудование?.map((оборудование) => оборудование)
-            ).length,
+            value: getRepairAmount(selectedRepair),
           },
-          { label: "Итого по работам", value: getRepairPrice(repair) },
+          {
+            label: "Итого по работам",
+            value: getRepairPrice(selectedRepair, selectedRepairType),
+          },
         ]}
       />
-      <button
-        className="text-red-600"
-        onClick={() => {
-          replaceRepair(repair.id);
-        }}
-      >
-        Удалить
-      </button>
-    </>
+      <menu className="flex gap-4 mt-auto">
+        <ul>
+          <button
+            onClick={() => {
+              saveRepair();
+              setSelectedRepairType(null);
+            }}
+          >
+            Сохранить
+          </button>
+        </ul>
+        <ul>
+          <button
+            className="text-red-600"
+            onClick={() => {
+              deleteRepair();
+              setSelectedRepairType(null);
+              setSelectedRepair(null);
+            }}
+          >
+            Удалить
+          </button>
+        </ul>
+      </menu>
+    </Dialog>
   );
-};
+});

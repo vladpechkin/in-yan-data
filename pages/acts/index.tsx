@@ -1,18 +1,12 @@
 import { Act } from "@/types";
 import { getActPrice, getRepairTypePrice } from "@/utils";
+import { observer } from "mobx-react";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
+import { useStore } from "../_app";
 
-const Page = () => {
-  const [acts, setActs] = useState<Act[]>([]);
-
-  useEffect(() => {
-    fetch("/acts.json")
-      .then((res) => res.json())
-      .then(setActs);
-  }, []);
-
+const Page = observer(() => {
+  const { acts } = useStore();
   return (
     <Layout>
       <table className="w-full">
@@ -32,14 +26,14 @@ const Page = () => {
         </thead>
         <tbody>
           {acts.length > 0 &&
-            acts.map((act, index) => {
+            acts.map((act: Act, index: number) => {
               const actPrice = getActPrice(act);
               return (
-                <tr key={index}>
+                <tr key={index} className={act.выделен ? "bg-blue-100" : ""}>
                   <td>{act.отчетныйПериод}</td>
                   <td>{act.производство}</td>
-                  <td>{getRepairTypePrice(act.ППР)}</td>
-                  <td>{getRepairTypePrice(act.ОТР)}</td>
+                  <td>{getRepairTypePrice(act.ППР, "ППР")}</td>
+                  <td>{getRepairTypePrice(act.ОТР, "ОТР")}</td>
                   <td>{actPrice}</td>
                   <td>{actPrice * 0.2}</td>
                   <td>{actPrice * 1.2}</td>
@@ -67,6 +61,6 @@ const Page = () => {
       </table>
     </Layout>
   );
-};
+});
 
 export default Page;

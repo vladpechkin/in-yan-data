@@ -24,9 +24,9 @@ const Page = () => {
 
   const entityTemplate = Object.fromEntries(entityKeys.map((key) => [key, ""]));
 
-  const [changedEntity, setChangedEntity] = useState<Object>({});
+  const [changedEntity, setChangedEntity] = useState<any>({});
 
-  let changedValue = {};
+  let changedValue: any = {};
 
   const filteredEntities = entities.filter(
     (entity, index) => index !== indexToEdit
@@ -61,11 +61,11 @@ const Page = () => {
             {entities &&
               entityKeys &&
               entities
-                .sort((a, b) =>
-                  a[entityKeys[0]]
-                    .toString()
-                    .localeCompare(b[entityKeys[0].toString()])
-                )
+                // .sort((a, b) =>
+                //   a[entityKeys[0]]
+                //     .toString()
+                //     .localeCompare(b[entityKeys[0].toString()])
+                // )
                 .map((entity, entityIndex) => (
                   <tr key={entityIndex}>
                     {Object.values(entity).map((value, index) => (
@@ -112,9 +112,9 @@ const Page = () => {
             label={key}
             key={key}
             value={changedEntity[key]}
-            onChange={(value) => {
+            onChange={(value: any) => {
               changedValue[key] = value;
-              setChangedEntity((prevState) => ({
+              setChangedEntity((prevState: any) => ({
                 ...prevState,
                 ...changedValue,
               }));
