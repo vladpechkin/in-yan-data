@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, ReactNode, useEffect } from "react";
-import { Details } from "./Equix/Details";
+import { Details } from "../equix/Details";
 import { Logo } from "./Logo";
-import { NavItem } from "./Equix/NavItem";
+import { NavItem } from "../equix/NavItem";
 
 const routes = [
   { name: "Акты", url: "/acts" },

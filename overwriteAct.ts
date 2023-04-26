@@ -65,13 +65,13 @@ export const overwriteAct = (
           editCell(
             header,
             `X${row}`,
-            getRepairPrice(repair, "ППР").toLocaleString("en")
+            getRepairPrice(repair, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           editCell(header, `Z${row}`, getRepairAmount(repair).toString());
           editCell(
             header,
             `AD${row}`,
-            getRepairsPrice(repair, "ППР").toLocaleString("en")
+            getRepairsPrice(repair, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           row++;
         });
@@ -83,7 +83,7 @@ export const overwriteAct = (
         editCell(
           header,
           `AD${row}`,
-          getRepairTypePrice(act.ППР, "ППР").toLocaleString("en")
+          getRepairTypePrice(act.ППР, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
         );
         row++;
       }
@@ -107,13 +107,13 @@ export const overwriteAct = (
           editCell(
             header,
             `X${row}`,
-            getRepairPrice(repair, "ОТР").toLocaleString("en")
+            getRepairPrice(repair, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           editCell(header, `Z${row}`, getRepairAmount(repair).toString());
           editCell(
             header,
             `AD${row}`,
-            getRepairsPrice(repair, "ОТР").toLocaleString("en")
+            getRepairsPrice(repair, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           row++;
         });
@@ -122,7 +122,7 @@ export const overwriteAct = (
         editCell(
           header,
           `AD${row}`,
-          getRepairTypePrice(act.ОТР, "ОТР").toLocaleString("en")
+          getRepairTypePrice(act.ОТР, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
         );
       }
 
@@ -137,24 +137,24 @@ export const overwriteAct = (
             footer,
             "A5",
             `Всего к оплате: ${rubles(
-              getActPrice(act)
+              getActPrice(act) * 1.2
             )}, в т.ч. НДС 20% - ${rubles(getActPrice(act) * 0.2)}.`
           );
-          editCell(footer, "AD1", getActPrice(act).toLocaleString("en"));
+          editCell(footer, "AD1", getActPrice(act).toLocaleString('ru', {style:"currency", currency:"RUB"}));
           editCell(
             footer,
             "AD2",
-            (getActPrice(act) * 0.2).toLocaleString("en")
+            (getActPrice(act) * 0.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           editCell(
             footer,
             "AD3",
-            (getActPrice(act) * 1.2).toLocaleString("en")
+            (getActPrice(act) * 1.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           editCell(
             footer,
             "AD4",
-            (getActPrice(act) * 1.2).toLocaleString("en")
+            (getActPrice(act) * 1.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
           );
           editCell(footer, "AC1", "");
           editCell(footer, "AC2", "");

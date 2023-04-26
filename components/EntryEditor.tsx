@@ -5,10 +5,10 @@ import { InputOption, RepairType } from "@/types";
 import { getActPrice, getRepairTypePrice, toOptions } from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
-import { Data, Row } from "../Equix/Data";
-import { Input } from "../Equix/Input";
-import { Textarea } from "../Equix/Textarea";
-import { Toggle } from "../Equix/Toggle";
+import { Data, Row } from "../equix/Data";
+import { Input } from "../equix/Input";
+import { Textarea } from "../equix/Textarea";
+import { Toggle } from "../equix/Toggle";
 import { RepairTable } from "./RepairTable";
 
 interface Props {

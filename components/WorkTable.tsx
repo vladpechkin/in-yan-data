@@ -8,7 +8,7 @@ import {
   toOptions,
 } from "@/utils";
 import { observer } from "mobx-react";
-import { Input } from "../Equix/Input";
+import { Input } from "@/equix/Input";
 
 export const WorkTable = observer(() => {
   const {
@@ -22,7 +22,9 @@ export const WorkTable = observer(() => {
   } = useStore();
 
   const workOptions = toOptions(
-    getWorks(selectedRepairType).map((work: any) => work["Содержание работ"])
+    getWorks(selectedRepairType).map(
+      (work: Work) => `${work["№ п.п."]}  ${work["Содержание работ"]}`
+    )
   );
 
   const updateDescription = () =>

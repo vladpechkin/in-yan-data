@@ -105,8 +105,8 @@ export const getEmptyShift = (): Shift => ({
 export const getEmptyWork = (): Work => ({
   id: uuidv4(),
   единицаИзмерения: "шт.",
-  номерПункта: 0,
   количество: 0,
+  "№ п.п.": 0,
   "Содержание работ": "",
   цена: 0,
 });
@@ -120,7 +120,7 @@ export const getEmptyRepairObject = (): RepairObject => ({
 export const getEmptyRepair = (): Repair => ({
   id: uuidv4(),
   зона: "",
-  доля: 0,
+  доля: 100,
   объектыРемонта: [getEmptyRepairObject()],
   описание: "Выполнено: ",
   работы: [getEmptyWork()],
@@ -140,7 +140,7 @@ export const getEmptyAct = (): Act => ({
   выделен: false,
   отчетныйПериод: new Date().toLocaleDateString("ru", {
     month: "2-digit",
-    year: "2-digit",
+    year: "numeric",
   }),
   примечание: "",
   производство: "",

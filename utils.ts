@@ -140,7 +140,16 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
 };
 
 export const getWorks = (type: RepairType): any[] =>
-  type === "ППР" ? ppr.map(({ работы }) => работы).flat() : otr;
+  type === "ППР"
+    ? ppr
+        .map((repairType) =>
+          repairType.работы.map((work) => ({
+            ...work,
+            "№ п.п.": `${repairType.номер}.${work["№ п.п."]}`,
+          }))
+        )
+        .flat()
+    : otr;
 
 export const getSeasonColor = (date: string) => {
   const month = parseInt(date.slice(0, 2));

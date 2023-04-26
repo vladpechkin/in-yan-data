@@ -4,7 +4,7 @@ import { useStore } from "@/pages/_app";
 import { InputOption, Repair } from "@/types";
 import { getRepairDescription, toOptions } from "@/utils";
 import { observer } from "mobx-react";
-import { Input } from "../Equix/Input";
+import { Input } from "@/equix/Input";
 
 export const RepairObjectTable = observer(() => {
   const {

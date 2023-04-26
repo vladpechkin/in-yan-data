@@ -1,4 +1,4 @@
-import { ErrorPage } from "@/components/Equix/ErrorPage";
+import { ErrorPage } from "@/equix/ErrorPage";
 
 const Page = () => <ErrorPage />;
 

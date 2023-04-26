@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import ErrorBoundary from "../components/Equix/ErrorBoundary";
 import { Inter } from "next/font/google";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { createStore } from "@/store";
 import { useLocalObservable } from "mobx-react";
 import { createContext, useContext } from "react";
+import ErrorBoundary from "@/equix/ErrorBoundary";
 
 const inter = Inter({ subsets: ["latin"] });
 

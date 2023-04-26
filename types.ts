@@ -1,39 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 import { actStates, machinery, measurementUnits, repairTypes } from "./consts";
 
-export interface Pr {
-  "Итого за месяц  без НДС, руб в 2022 году": number;
-  "Годовая стоимость  обслуживания  без НДС, руб в 2022 году": number;
-  "Итого за месяц  без НДС, руб в 2023 году": number;
-  "Годовая стоимость  обслуживания  без НДС, руб в 2023 году": number;
-  "Итого за месяц без НДС, руб в 2024 году": number;
-  "Годовая стоимость  обслуживания  без НДС, руб в 2024 году": number;
-  "Итого за месяц без НДС, руб в 2025 году": number;
-  "Годовая стоимость  обслуживания  без НДС, руб в 2025 году": number;
-  works: PriceWork[];
-}
+export type Machine = (typeof machinery)[number];
 
-export interface PriceWork {
-  "№ п.п.": number;
-  "Содержание работ": string;
-  "Периодичность работ": string;
-  "Месячная стоимость  обслуживания  без НДС, руб в 2022 году": number;
-  "Месячная стоимость  обслуживания  без НДС, руб в 2023 году": number;
-  "Месячная стоимость  обслуживания  без НДС, руб в 2024 году": number;
-  "Месячная стоимость  обслуживания  без НДС, руб в 2025 году": number;
-}
+export type RepairType = (typeof repairTypes)[number];
 
-export type Machine = typeof machinery[number];
+export type ActState = (typeof actStates)[number];
 
-export type RepairType = typeof repairTypes[number];
-
-export type ActState = typeof actStates[number];
-
-export type MeasurementUnit = typeof measurementUnits[number];
+export type MeasurementUnit = (typeof measurementUnits)[number];
 
 export interface Work {
   id: string;
-  номерПункта?: number;
+  "№ п.п.": number;
   "Содержание работ": string;
   единицаИзмерения: MeasurementUnit;
   цена: number;

@@ -2,7 +2,7 @@ import { employeeOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, Repair } from "@/types";
 import { observer } from "mobx-react";
-import { Input } from "../Equix/Input";
+import { Input } from "@/equix/Input";
 
 export const ShiftTable = observer(() => {
   const { selectedRepair, createShift, deleteShift, updateShift } = useStore();

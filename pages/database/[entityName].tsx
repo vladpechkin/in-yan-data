@@ -1,5 +1,5 @@
-import { Input } from "@/components/Equix/Input";
-import { Dialog } from "@/components/Equix/Dialog";
+import { Input } from "@/equix/Input";
+import { Dialog } from "@/equix/Dialog";
 import { Layout } from "@/components/Layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

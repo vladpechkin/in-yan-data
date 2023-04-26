@@ -1,5 +1,5 @@
-import { EntryEditor } from "@/components/ActEditor/EntryEditor";
-import { RepairEditor } from "@/components/ActEditor/RepairEditor";
+import { EntryEditor } from "@/components/EntryEditor";
+import { RepairEditor } from "@/components/RepairEditor";
 import { Layout } from "@/components/Layout";
 import { getEmptyAct } from "@/consts";
 import { overwriteAct } from "@/overwriteAct";
