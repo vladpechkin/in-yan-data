@@ -45,22 +45,25 @@ const Page = observer(() => {
                   router.push("/acts");
                 }}
               >
-                Сохранить
+                Записать измения
               </button>
             </ul>
-            <ul>
-              <button
-                onClick={() =>
-                  overwriteAct(selectedAct, (worksheet) => {
-                    const workbook = utils.book_new();
-                    utils.book_append_sheet(workbook, worksheet, "Лист 1");
-                    writeFile(workbook, "Акт.xls");
-                  })
-                }
-              >
-                Печатать
-              </button>
-            </ul>
+            {(selectedAct.ППР.ремонты[0]?.работы[0]["Содержание работ"] ||
+              selectedAct.ОТР.ремонты[0]?.работы[0]["Содержание работ"]) && (
+              <ul>
+                <button
+                  onClick={() =>
+                    overwriteAct(selectedAct, (worksheet) => {
+                      const workbook = utils.book_new();
+                      utils.book_append_sheet(workbook, worksheet, "Лист 1");
+                      writeFile(workbook, "Акт.xls");
+                    })
+                  }
+                >
+                  Открыть файл
+                </button>
+              </ul>
+            )}
             <ul>
               <button
                 className="text-red-600"

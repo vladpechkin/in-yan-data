@@ -121,8 +121,8 @@ export const overwriteAct = (
           editCell(
             footer,
             "A5",
-            `Всего к оплате: ${rubles(
-              getActPrice(act) * 1.2
+            `Всего к оплате: ${rubles(getActPrice(act) * 1.2).toLocaleString(
+              "ru"
             )}, в т.ч. НДС 20% - ${rubles(getActPrice(act) * 0.2)}.`
           );
           editCell(footer, "AD1", format(getActPrice(act)));

@@ -59,15 +59,21 @@ export const RepairEditor = observer(() => {
           }
         />
       </div>
-      <RepairObjectTable />
-      <ShiftTable />
-      <WorkTable />
-      <Textarea
-        label="Описание ремонта"
-        className="h-40"
-        value={selectedRepair.описание}
-        onChange={(value: string) => setSelectedRepair({ описание: value })}
-      />
+      {selectedRepair.зона && <RepairObjectTable />}
+      {selectedRepair.объектыРемонта[0].оборудование.length > 0 && (
+        <>
+          <ShiftTable />
+          <WorkTable />
+        </>
+      )}
+      {selectedRepair.работы[0]["Содержание работ"] && (
+        <Textarea
+          label="Описание ремонта"
+          className="h-40"
+          value={selectedRepair.описание}
+          onChange={(value: string) => setSelectedRepair({ описание: value })}
+        />
+      )}
       <Row
         {...[
           {

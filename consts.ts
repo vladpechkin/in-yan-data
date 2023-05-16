@@ -9,6 +9,7 @@ export const prejskuranti = [
       "преобразователь давления",
       "преобразователь температуры",
       "манометр",
+      "_ИНОЕ ОБОРУДОВАНИЕ_",
     ],
   },
   {
@@ -17,6 +18,7 @@ export const prejskuranti = [
     oborudovanie: [
       "ультразвуковой расходомер",
       "электромагнитный, вихревой, ротационный и аналогичный расходомер/механический счетчик",
+      "расходомер",
     ],
   },
   {
@@ -68,7 +70,8 @@ export const prejskuranti = [
 
 export const machinery = prejskuranti
   .map(({ oborudovanie }) => oborudovanie)
-  .flat();
+  .flat()
+  .sort((a, b) => a.localeCompare(b));
 
 export const actStates = [
   "Не подписан",

@@ -56,14 +56,20 @@ export const WorkTable = observer(() => {
                 )}
                 isCollapsed
                 onChange={(value: InputOption) => {
+                  console.log;
                   updateWork(work.id, {
                     ...work,
                     "Содержание работ": value.name,
                     цена: getWorks(selectedRepairType).find((work) =>
                       selectedRepairType === "ППР"
-                        ? getWorks(selectedRepairType).find((work: Work) =>
-                            value.name.includes(work["Содержание работ"])
-                          )["Стоимость"]
+                        ? value.name
+                            .replaceAll(/[0-9]/g, "")
+                            .replaceAll(" ", "")
+                            .includes(
+                              work["Содержание работ"]
+                                .replaceAll(/[0-9]/g, "")
+                                .replaceAll(" ", "")
+                            )
                         : work["Содержание работ"]
                             .replaceAll(/[0-9]/g, "")
                             .replaceAll(" ", "") ===
@@ -132,7 +138,12 @@ export const WorkTable = observer(() => {
         ))}
         <tr>
           <td colSpan={100}>
-            <button className="w-full" onClick={() => createWork()}>
+            <button
+              className="w-full"
+              onClick={() => {
+                createWork();
+              }}
+            >
               Добавить
             </button>
           </td>
