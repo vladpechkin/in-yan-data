@@ -53,7 +53,10 @@ export const ShiftTable = observer(() => {
               <button
                 className="text-red-600 w-full text-center"
                 onClick={() => {
-                  deleteShift(shift.id);
+                  const confirmed = confirm("Подтвердите удаление");
+                  if (confirmed) {
+                    deleteShift(shift.id);
+                  }
                 }}
               >
                 Удалить

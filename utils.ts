@@ -61,9 +61,15 @@ export const editCell = (
 export const getRepairPrice = (repair: Repair, type: RepairType) => {
   let price = 0;
   repair.работы.map((work) => {
-    const pricelistWork = getWorks(type).find(
-      (priceListWork: Work) =>
-        priceListWork["Содержание работ"] === work["Содержание работ"]
+    const pricelistWork = getWorks(type).find((priceListWork: Work) =>
+      type === "ППР"
+        ? getWorks(type).find((work: Work) =>
+            work["Содержание работ"].includes(work["Содержание работ"])
+          )["Стоимость"]
+        : priceListWork["Содержание работ"]
+            .replaceAll(/[0-9]/g, "")
+            .replaceAll(" ", "") ===
+          work["Содержание работ"].replaceAll(/[0-9]/g, "").replaceAll(" ", "")
     );
     const цена = pricelistWork ? pricelistWork["Стоимость"] : 0;
     price += цена;
@@ -117,26 +123,19 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const objs = repair.объектыРемонта
     .map(
       (obj) =>
-        `${obj.оборудование.join(", ")} в корп. ${obj.корпус.split(" ")[0]}`
+        `${obj.оборудование.join(", ")} в корп. ${obj.корпус
+          .split(" ")[0]
+          .replaceAll(/[а-яА-Я]/g, "")}`
     )
     .join("; ");
 
-  const allWorks = getWorks(type);
-
   return `Выполнено: ${repair?.работы
-    ?.map((work) => `${work["Содержание работ"]}`)
-    .join(", ")} (на оборудовании: ${objs} согласно п.п. ${repair?.работы
-    ?.map((work) => {
-      const w = allWorks.find(
-        (typeWork) => typeWork["Содержание работ"] === work["Содержание работ"]
-      );
-      if (w) return w["№ п.п."];
-    })
-    .join(", ")} ${
+    ?.map((work) => `п. ${work["Содержание работ"]}`)
+    .join(", ")} (на оборудовании: ${objs} согласно ${
     type === "ППР"
       ? `прейскуранта № ${prices}`
       : "прейскуранта работ по оперативному (текущему) и аварийному ремонту "
-  } приложения №${type === "ППР" ? 4 : 5}).`;
+  } приложения №${type === "ППР" ? 4 : 5}).`.replaceAll("  ", " ");
 };
 
 export const getWorks = (type: RepairType): any[] =>
@@ -164,3 +163,8 @@ export const getSeasonColor = (date: string) => {
 
 export const sheet_to_aoa = (sheet: WorkSheet): unknown[][] =>
   utils.sheet_to_json(sheet, { header: 1 });
+
+export const format = (string: string | number) =>
+  string
+    .toLocaleString("ru", { style: "currency", currency: "RUB" })
+    .replace("₽", "");

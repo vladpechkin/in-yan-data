@@ -65,8 +65,11 @@ const Page = observer(() => {
               <button
                 className="text-red-600"
                 onClick={() => {
-                  deleteAct();
-                  router.push("/acts");
+                  const confirmed = confirm("Подтвердите удаление");
+                  if (confirmed) {
+                    deleteAct();
+                    router.push("/acts");
+                  }
                 }}
               >
                 Удалить

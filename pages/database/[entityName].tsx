@@ -140,9 +140,12 @@ const Page = () => {
               <button
                 className="text-red-600"
                 onClick={() => {
-                  setEntities(filteredEntities);
-                  setChangedEntity(entityTemplate);
-                  setIndexToEdit(null);
+                  const confirmed = confirm("Подтвердите удаление");
+                  if (confirmed) {
+                    setEntities(filteredEntities);
+                    setChangedEntity(entityTemplate);
+                    setIndexToEdit(null);
+                  }
                 }}
               >
                 Удалить

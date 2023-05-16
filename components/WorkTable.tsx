@@ -23,7 +23,7 @@ export const WorkTable = observer(() => {
 
   const workOptions = toOptions(
     getWorks(selectedRepairType).map(
-      (work: Work) => `${work["№ п.п."]}  ${work["Содержание работ"]}`
+      (work: Work) => `${work["№ п.п."]} ${work["Содержание работ"]}`
     )
   );
 
@@ -42,6 +42,7 @@ export const WorkTable = observer(() => {
           <th>Тип работы</th>
           <th>Кол-во</th>
           <th>Ед. изм.</th>
+          <th>Цена</th>
           {(selectedRepair as Repair).работы.length > 1 && <th>Действия</th>}
         </tr>
         {(selectedRepair as Repair).работы.map((work, index) => (
@@ -58,34 +59,36 @@ export const WorkTable = observer(() => {
                   updateWork(work.id, {
                     ...work,
                     "Содержание работ": value.name,
-                    цена: getWorks(selectedRepairType).find((work: Work) =>
-                      work["Содержание работ"].includes(value.name)
+                    цена: getWorks(selectedRepairType).find((work) =>
+                      selectedRepairType === "ППР"
+                        ? getWorks(selectedRepairType).find((work: Work) =>
+                            value.name.includes(work["Содержание работ"])
+                          )["Стоимость"]
+                        : work["Содержание работ"]
+                            .replaceAll(/[0-9]/g, "")
+                            .replaceAll(" ", "") ===
+                          value.name
+                            .replaceAll(/[0-9]/g, "")
+                            .replaceAll(" ", "")
                     )["Стоимость"],
                   });
-                  console.log(
-                    getRepairPrice(selectedRepair, selectedRepairType)
-                  );
                   updateDescription();
                 }}
               />
             </td>
             <td className="w-20">
-              {selectedRepairType === "ППР" ? (
-                "1"
-              ) : (
-                <Input
-                  type="text"
-                  size={4}
-                  value={work.количество.toString()}
-                  onChange={(value: string) => {
-                    updateWork(work.id, {
-                      ...work,
-                      количество: parseInt(value),
-                    });
-                    updateDescription();
-                  }}
-                />
-              )}
+              <Input
+                type="text"
+                size={4}
+                value={work.количество.toString()}
+                onChange={(value: string) => {
+                  updateWork(work.id, {
+                    ...work,
+                    количество: parseInt(value),
+                  });
+                  updateDescription();
+                }}
+              />
             </td>
             <td className="w-16">
               {selectedRepairType === "ППР" ? (
@@ -107,14 +110,18 @@ export const WorkTable = observer(() => {
                 />
               )}
             </td>
+            <td>{work["цена"]}</td>
 
             {(selectedRepair as Repair).работы.length > 1 && (
               <td className="w-20">
                 <button
                   className="text-red-600 w-full text-center"
                   onClick={() => {
-                    deleteWork(work.id);
-                    updateDescription();
+                    const confirmed = confirm("Подтвердите удаление");
+                    if (confirmed) {
+                      deleteWork(work.id);
+                      updateDescription();
+                    }
                   }}
                 >
                   Удалить

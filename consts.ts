@@ -105,7 +105,7 @@ export const getEmptyShift = (): Shift => ({
 export const getEmptyWork = (): Work => ({
   id: uuidv4(),
   единицаИзмерения: "шт.",
-  количество: 0,
+  количество: 1,
   "№ п.п.": 0,
   "Содержание работ": "",
   цена: 0,

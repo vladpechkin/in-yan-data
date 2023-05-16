@@ -76,8 +76,11 @@ export const RepairObjectTable = observer(() => {
                 <button
                   className="text-red-600 w-full text-center"
                   onClick={() => {
-                    deleteRepairObject(object.id);
-                    updateDescription();
+                    const confirmed = confirm("Подтвердите удаление");
+                    if (confirmed) {
+                      deleteRepairObject(object.id);
+                      updateDescription();
+                    }
                   }}
                 >
                   Удалить

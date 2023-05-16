@@ -29,8 +29,6 @@ export const RepairEditor = observer(() => {
     });
   }, []);
 
-  const router = useRouter();
-
   return (
     <Dialog
       title="Ремонт"
@@ -97,9 +95,12 @@ export const RepairEditor = observer(() => {
           <button
             className="text-red-600"
             onClick={() => {
-              deleteRepair();
-              setSelectedRepairType(null);
-              setSelectedRepair(null);
+              const confirmed = confirm("Подтвердите удаление");
+              if (confirmed) {
+                deleteRepair(selectedRepair.id);
+                setSelectedRepairType(null);
+                setSelectedRepair(null);
+              }
             }}
           >
             Удалить

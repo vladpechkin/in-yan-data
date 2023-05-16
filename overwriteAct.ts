@@ -1,6 +1,7 @@
 import { Act } from "@/types";
 import {
   editCell,
+  format,
   getActPrice,
   getRepairAmount,
   getRepairDescription,
@@ -62,17 +63,9 @@ export const overwriteAct = (
             `U${row}`,
             act.ППР.ремонты[0].работы[0].единицаИзмерения
           );
-          editCell(
-            header,
-            `X${row}`,
-            getRepairPrice(repair, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
+          editCell(header, `X${row}`, format(getRepairPrice(repair, "ППР")));
           editCell(header, `Z${row}`, getRepairAmount(repair).toString());
-          editCell(
-            header,
-            `AD${row}`,
-            getRepairsPrice(repair, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
+          editCell(header, `AD${row}`, format(getRepairsPrice(repair, "ППР")));
           row++;
         });
         editCell(
@@ -83,7 +76,7 @@ export const overwriteAct = (
         editCell(
           header,
           `AD${row}`,
-          getRepairTypePrice(act.ППР, "ППР").toLocaleString('ru', {style:"currency", currency:"RUB"})
+          format(getRepairTypePrice(act.ППР, "ППР"))
         );
         row++;
       }
@@ -104,17 +97,9 @@ export const overwriteAct = (
             `U${row}`,
             act.ОТР.ремонты[0].работы[0].единицаИзмерения
           );
-          editCell(
-            header,
-            `X${row}`,
-            getRepairPrice(repair, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
+          editCell(header, `X${row}`, format(getRepairPrice(repair, "ОТР")));
           editCell(header, `Z${row}`, getRepairAmount(repair).toString());
-          editCell(
-            header,
-            `AD${row}`,
-            getRepairsPrice(repair, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
+          editCell(header, `AD${row}`, format(getRepairsPrice(repair, "ОТР")));
           row++;
         });
 
@@ -122,7 +107,7 @@ export const overwriteAct = (
         editCell(
           header,
           `AD${row}`,
-          getRepairTypePrice(act.ОТР, "ОТР").toLocaleString('ru', {style:"currency", currency:"RUB"})
+          format(getRepairTypePrice(act.ОТР, "ОТР"))
         );
       }
 
@@ -140,22 +125,10 @@ export const overwriteAct = (
               getActPrice(act) * 1.2
             )}, в т.ч. НДС 20% - ${rubles(getActPrice(act) * 0.2)}.`
           );
-          editCell(footer, "AD1", getActPrice(act).toLocaleString('ru', {style:"currency", currency:"RUB"}));
-          editCell(
-            footer,
-            "AD2",
-            (getActPrice(act) * 0.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
-          editCell(
-            footer,
-            "AD3",
-            (getActPrice(act) * 1.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
-          editCell(
-            footer,
-            "AD4",
-            (getActPrice(act) * 1.2).toLocaleString('ru', {style:"currency", currency:"RUB"})
-          );
+          editCell(footer, "AD1", format(getActPrice(act)));
+          editCell(footer, "AD2", format(getActPrice(act) * 0.2));
+          editCell(footer, "AD3", format(getActPrice(act) * 1.2));
+          editCell(footer, "AD4", format(getActPrice(act) * 1.2));
           editCell(footer, "AC1", "");
           editCell(footer, "AC2", "");
           editCell(footer, "AC3", "");
