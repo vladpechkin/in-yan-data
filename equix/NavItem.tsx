@@ -4,26 +4,42 @@ import { FC } from "react";
 
 interface Props {
   name: string;
-  url: string;
+  url?: string;
+  entityName?: string;
+  setEntityName?: (value: string | null) => void;
 }
 
-export const NavItem: FC<Props> = ({ name, url }) => {
+export const NavItem: FC<Props> = ({
+  name,
+  url,
+  entityName,
+  setEntityName,
+}) => {
   const router = useRouter();
 
   const isActive =
     (url === "/" && router.pathname === url) ||
-    (url !== "/" && router.asPath.includes(url));
+    (url && url !== "/" && router.asPath.includes(url));
+
+  const className = `flex items-center whitespace-nowrap ${
+    isActive ? "font-semibold text-black" : ""
+  }`;
+
+  const Element = url ? Link : "button";
 
   return (
     <li>
-      <Link
-        className={`flex items-center whitespace-nowrap ${
-          isActive ? "font-semibold text-black" : ""
-        }`}
-        href={url}
+      <Element
+        className={className}
+        href={url!}
+        onClick={
+          setEntityName && entityName
+            ? () => setEntityName(entityName)
+            : undefined
+        }
       >
         {name}
-      </Link>
+      </Element>
     </li>
   );
 };
