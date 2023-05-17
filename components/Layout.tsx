@@ -100,7 +100,7 @@ export const Layout: FC<Props> = ({ children, className }) => {
             setEntityName={setSelectedEntityName}
             title={
               routes.find((route) => route.entityName === selectedEntityName)
-                ?.name
+                ?.name || "Обзор данных"
             }
           />
         )}
