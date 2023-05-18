@@ -23,9 +23,8 @@ export const ShiftTable = observer(() => {
             <td className="w-20">
               <Input
                 type="date"
-                withLabels={false}
                 value={shift.дата}
-                onChange={(value: Date) =>
+                onChange={(value: string) =>
                   updateShift(shift.id, {
                     ...shift,
                     дата: value,
