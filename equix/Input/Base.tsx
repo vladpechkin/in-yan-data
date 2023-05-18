@@ -17,14 +17,14 @@ export interface BaseInputProps {
 }
 
 interface ComponentProps {
-  as: ElementType;
+  as?: ElementType;
   className?: string;
   errorMessage?: string;
   children: ReactNode;
 }
 
 export const InputBase: FC<ComponentProps> = ({
-  as,
+  as = "label",
   className,
   children,
   errorMessage,

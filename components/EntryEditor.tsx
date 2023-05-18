@@ -1,4 +1,5 @@
 import { actStates } from "@/consts";
+import { DateInput } from "@/equix/Input/Date";
 import { productionOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, RepairType } from "@/types";
@@ -87,15 +88,18 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
       <section className="flex flex-col gap-2">
         <h3 className="font-semibold">Отчет</h3>
         <div className="flex gap-4 flex-wrap">
-          <Input
+          <DateInput
             label="Отчет. период"
-            value={selectedAct.отчетныйПериод}
-            size={7}
-            onChange={(value: string) =>
+            onChange={(value) =>
               setSelectedAct({
                 отчетныйПериод: value,
               })
             }
+            value={selectedAct.отчетныйПериод}
+            options={{
+              month: "2-digit",
+              year: "numeric",
+            }}
           />
           <Input
             type="radio"
