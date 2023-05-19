@@ -6,16 +6,14 @@ import { useStore } from "./_app";
 const Page = () => {
   useEffect(() => {
     fetch(
-      "https://script.google.com/macros/s/AKfycbxAa5fNUeSo1DxuFHPUvPEl8PNei_hdYftE7q_E3ESUNzq2oZQPIGSXeThR3RjYgBKv/exec",
+      "https://script.google.com/macros/s/AKfycbzFGhXLh1n98zdinnfF9Q6u-5-TqUjR1Cxo5mnkGwSRpkTHiGMFPTUIROjfotU08KDX/exec",
       {
-        method: "POST",
+        redirect: "follow",
         headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Basic " + btoa("pechkinde@gmail.com" + ":" + "H4shb4ng.."),
+          Accept: "application/json",
         },
       }
-    );
+    ).then((res) => res.json().then(console.log));
   }, []);
 
   return <div>test</div>;
