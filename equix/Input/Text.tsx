@@ -21,7 +21,7 @@ export const TextInput: FC<TextProps> = ({
     <input
       value={value}
       type={type}
-      className={`flex items-center border border-blue-500 px-2 py-1 h-8 ${
+      className={`flex items-center border border-blue-500 px-2 py-1 h-8 rounded-lg border-2 ${
         className || ""
       }`}
       size={size}

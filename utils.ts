@@ -53,10 +53,10 @@ export const editCell = (
   worksheet: WorkSheet,
   cell: string,
   newContents: string
-) =>
-  utils.sheet_add_aoa(worksheet, [[newContents]], {
-    origin: cell,
-  });
+) => {
+  worksheet.getRange(cell).activate();
+  worksheet.getCurrentCell().setValue(newContents);
+};
 
 export const getRepairPrice = (repair: Repair, type: RepairType) => {
   let price = 0;

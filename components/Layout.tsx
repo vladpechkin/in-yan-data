@@ -4,7 +4,7 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { Details } from "../equix/Details";
 import { Logo } from "./Logo";
 import { NavItem } from "../equix/NavItem";
-import { EntitiesEditor } from "./EntitiesEditor";
+import { EntitiesEditor } from "../equix/EntitiesEditor";
 
 const routes = [
   { name: "Акты", url: "/acts" },
