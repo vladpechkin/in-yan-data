@@ -13,18 +13,25 @@ export default async function handler(req, res) {
         const { id } = req.query;
 
         res.status(200).json(objectData.find((x) => x.id === id));
+        break;
       }
       case "PUT": {
         const fileData = await fsPromises.readFile(dataFilePath);
         let objectData = JSON.parse(fileData);
 
         const { id } = req.query;
-        const body = JSON.parse(req.body);
+        const body = req.body;
+
+        if (Object.keys(body).length === 0) {
+          res.status(411);
+          return;
+        }
 
         objectData = objectData.map((x) => (x.id === id ? body : x));
 
         await fsPromises.writeFile(dataFilePath, JSON.stringify(objectData));
         res.status(200).json("PUT");
+        break;
       }
       case "DELETE": {
         const fileData = await fsPromises.readFile(dataFilePath);
@@ -39,6 +46,7 @@ export default async function handler(req, res) {
         await fsPromises.writeFile(dataFilePath, updatedData);
 
         res.status(200).json("DELETED");
+        break;
       }
     }
   } catch (error) {

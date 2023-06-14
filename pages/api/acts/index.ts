@@ -18,6 +18,7 @@ export default async function handler(req, res) {
 
         await fsPromises.writeFile(dataFilePath, updatedData);
         res.status(200).json("POSTED");
+        break;
       }
     }
   } catch (error) {
