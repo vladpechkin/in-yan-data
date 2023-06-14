@@ -2,11 +2,30 @@ import { Act } from "@/types";
 import { getActPrice, getRepairTypePrice } from "@/utils";
 import { observer } from "mobx-react";
 import Link from "next/link";
-import { Layout } from "../../components/Layout";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Layout } from "../../equix/Layout";
 import { useStore } from "../_app";
 
 const Page = observer(() => {
-  const { acts } = useStore();
+  const [acts, setActs] = useState([]);
+  const { events } = useRouter();
+
+  const getData = () =>
+    fetch("/acts.json")
+      .then((res) => res.json())
+      .then(setActs);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    events.on("routeChangeComplete", () => {
+      getData();
+    });
+  }, [events]);
+
   return (
     <Layout>
       <table className="w-full">

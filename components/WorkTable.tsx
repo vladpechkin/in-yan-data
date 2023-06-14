@@ -4,7 +4,7 @@ import { InputOption, Repair, Work } from "@/types";
 import {
   getRepairDescription,
   getRepairPrice,
-  getWorks,
+  getWorkNames,
   toOptions,
 } from "@/utils";
 import { observer } from "mobx-react";
@@ -22,7 +22,7 @@ export const WorkTable = observer(() => {
   } = useStore();
 
   const workOptions = toOptions(
-    getWorks(selectedRepairType).map(
+    getWorkNames(selectedRepairType).map(
       (work: Work) => `${work["№ п.п."]} ${work["Содержание работ"]}`
     )
   );
@@ -56,11 +56,10 @@ export const WorkTable = observer(() => {
                 )}
                 isCollapsed
                 onChange={(value: InputOption) => {
-                  console.log;
                   updateWork(work.id, {
                     ...work,
                     "Содержание работ": value.name,
-                    цена: getWorks(selectedRepairType).find((work) =>
+                    цена: getWorkNames(selectedRepairType).find((work) =>
                       selectedRepairType === "ППР"
                         ? value.name
                             .replaceAll(/[0-9]/g, "")

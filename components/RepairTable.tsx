@@ -42,7 +42,7 @@ export const RepairTable: FC<Props> = observer(
                 <td>
                   {repair.объектыРемонта.map((obj) => obj.оборудование).length}
                 </td>
-                <td>{getRepairPrice(repair, type)}</td>
+                <td>{repair.сумма}</td>
                 <td>
                   <button
                     onClick={() => {

@@ -1,7 +1,12 @@
 import { areaOptions } from "@/options";
 import { useStore } from "@/pages/_app";
-import { InputOption } from "@/types";
-import { getRepairAmount, getRepairDescription, getRepairPrice } from "@/utils";
+import { InputOption, Work } from "@/types";
+import {
+  getRepairAmount,
+  getRepairDescription,
+  getRepairPrice,
+  getWorkNames,
+} from "@/utils";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -21,6 +26,9 @@ export const RepairEditor = observer(() => {
     saveRepair,
     deleteRepair,
     setSelectedRepairType,
+    selectedAct,
+    setSelectedAct,
+    getSelectedRepair,
   } = useStore();
 
   useEffect(() => {
@@ -90,6 +98,40 @@ export const RepairEditor = observer(() => {
         <ul>
           <button
             onClick={() => {
+              let selectedRepairPrice = 0;
+              getSelectedRepair().работы.map((work: Work) => {
+                selectedRepairPrice += getWorkNames(selectedRepairType).find(
+                  (pricelistWork) =>
+                    pricelistWork["Содержание работ"]
+                      .replaceAll(/[0-9]/g, "")
+                      .replaceAll(" ", "") ===
+                    work["Содержание работ"]
+                      .replaceAll(/[0-9]/g, "")
+                      .replaceAll(" ", "")
+                )["Стоимость"];
+              });
+              setSelectedRepair({
+                сумма: selectedRepairPrice,
+              });
+              selectedRepairType
+                ? setSelectedAct({
+                    ППР: {
+                      ...selectedAct.ППР,
+                      стоимость: getRepairPrice(
+                        selectedRepair,
+                        selectedRepairType
+                      ),
+                    },
+                  })
+                : setSelectedAct({
+                    ОТР: {
+                      ...selectedAct.ОТР,
+                      стоимость: getRepairPrice(
+                        selectedRepair,
+                        selectedRepairType
+                      ),
+                    },
+                  });
               saveRepair();
               setSelectedRepairType(null);
             }}

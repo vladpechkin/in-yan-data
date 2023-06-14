@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Layout } from "../components/Layout";
+import { Layout } from "../equix/Layout";
 
 export const ErrorPage = () => {
   const router = useRouter();

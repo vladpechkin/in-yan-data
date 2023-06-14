@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { read, utils } from "xlsx";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../equix/Layout";
 
 const Page = () => {
   const [html, setHtml] = useState("");

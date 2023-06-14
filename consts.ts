@@ -109,7 +109,6 @@ export const getEmptyWork = (): Work => ({
   id: uuidv4(),
   единицаИзмерения: "шт.",
   количество: 1,
-  "№ п.п.": 0,
   "Содержание работ": "",
   цена: 0,
 });
@@ -141,10 +140,15 @@ export const getEmptyAct = (): Act => ({
     ремонты: [],
   },
   выделен: false,
-  отчетныйПериод: new Date().toLocaleDateString("ru", {
-    month: "2-digit",
-    year: "numeric",
-  }),
+  отчетныйПериод: new Date()
+    .toLocaleDateString("ru", {
+      month: "2-digit",
+      year: "numeric",
+      day: "2-digit",
+    })
+    .split(".")
+    .reverse()
+    .join("-"),
   примечание: "",
   производство: "",
   состояние: actStates[0],

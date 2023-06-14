@@ -11,17 +11,10 @@ export type MeasurementUnit = (typeof measurementUnits)[number];
 
 export interface Work {
   id: string;
-  "№ п.п.": number;
   "Содержание работ": string;
   единицаИзмерения: MeasurementUnit;
   цена: number;
   количество: number;
-}
-
-interface Building {
-  Код: string;
-  Наименование: string;
-  Зона: string;
 }
 
 export interface RepairObject {
@@ -51,6 +44,7 @@ export interface Repair {
   описание: string;
 
   зона: string;
+  сумма: number;
 }
 
 export interface Production {
@@ -64,10 +58,12 @@ export interface Act {
   ППР: {
     наряды: string;
     ремонты: Repair[];
+    стоимость: number;
   };
   ОТР: {
     наряды: string;
     ремонты: Repair[];
+    стоимость: number;
   };
   отчетныйПериод: string;
   производство: string;

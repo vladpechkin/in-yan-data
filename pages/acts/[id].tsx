@@ -1,9 +1,8 @@
 import { EntryEditor } from "@/components/EntryEditor";
 import { RepairEditor } from "@/components/RepairEditor";
-import { Layout } from "@/components/Layout";
 import { getEmptyAct } from "@/consts";
+import { Layout } from "@/equix/Layout";
 import { overwriteAct } from "@/overwriteAct";
-import { Act } from "@/types";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -12,7 +11,6 @@ import { useStore } from "../_app";
 
 const Page = observer(() => {
   const {
-    acts,
     setSelectedAct,
     setSelectedRepairType,
     selectedAct,
@@ -26,60 +24,67 @@ const Page = observer(() => {
 
   useEffect(() => {
     if (id && id !== "new") {
-      setSelectedAct(acts.find((entity: Act) => entity.id === id));
+      fetch(`/api/acts/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res && res?.json())
+        .then(setSelectedAct);
     } else setSelectedAct(getEmptyAct());
-  }, [id, setSelectedAct, acts]);
+  }, [id, setSelectedAct]);
 
   return (
     <>
       <Layout className="p-4 flex flex-col gap-4">
         <h2 className="text-xl font-medium">Акт</h2>
         <EntryEditor openRepairEditor={setSelectedRepairType} />
-        {(selectedAct.ППР.ремонты.length > 0 ||
-          selectedAct.ОТР.ремонты.length > 0) && (
-          <menu className="flex gap-4 mt-auto">
+        {/* {(selectedAct.ППР.ремонты.length > 0 ||
+          selectedAct.ОТР.ремонты.length > 0) && ( */}
+        <menu className="flex gap-4 mt-auto">
+          <ul>
+            <button
+              onClick={() => {
+                saveAct(router.asPath.includes("new") ? "POST" : "PUT");
+                router.reload();
+                router.push("/acts");
+              }}
+            >
+              Записать изменения
+            </button>
+          </ul>
+          {(selectedAct.ППР.ремонты[0]?.работы[0]["Содержание работ"] ||
+            selectedAct.ОТР.ремонты[0]?.работы[0]["Содержание работ"]) && (
             <ul>
               <button
-                onClick={() => {
-                  saveAct();
+                onClick={() =>
+                  overwriteAct(selectedAct, (worksheet) => {
+                    const workbook = utils.book_new();
+                    utils.book_append_sheet(workbook, worksheet, "Лист 1");
+                    writeFile(workbook, "Акт.xls");
+                  })
+                }
+              >
+                Открыть файл
+              </button>
+            </ul>
+          )}
+          <ul>
+            <button
+              className="text-red-600"
+              onClick={() => {
+                const confirmed = confirm("Подтвердите удаление");
+                if (confirmed) {
+                  deleteAct();
                   router.push("/acts");
-                }}
-              >
-                Записать измения
-              </button>
-            </ul>
-            {(selectedAct.ППР.ремонты[0]?.работы[0]["Содержание работ"] ||
-              selectedAct.ОТР.ремонты[0]?.работы[0]["Содержание работ"]) && (
-              <ul>
-                <button
-                  onClick={() =>
-                    overwriteAct(selectedAct, (worksheet) => {
-                      const workbook = utils.book_new();
-                      utils.book_append_sheet(workbook, worksheet, "Лист 1");
-                      writeFile(workbook, "Акт.xls");
-                    })
-                  }
-                >
-                  Открыть файл
-                </button>
-              </ul>
-            )}
-            <ul>
-              <button
-                className="text-red-600"
-                onClick={() => {
-                  const confirmed = confirm("Подтвердите удаление");
-                  if (confirmed) {
-                    deleteAct();
-                    router.push("/acts");
-                  }
-                }}
-              >
-                Удалить
-              </button>
-            </ul>
-          </menu>
-        )}
+                }
+              }}
+            >
+              Удалить
+            </button>
+          </ul>
+        </menu>
+        {/* )} */}
       </Layout>
       {selectedRepair && <RepairEditor />}
     </>

@@ -48,10 +48,7 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
               });
             }}
           />
-          <Data
-            label="Итого по ППР"
-            value={getRepairTypePrice(selectedAct.ППР, "ППР")}
-          />
+          <Data label="Итого по ППР" value={selectedAct.ППР.стоимость} />
         </section>
         <section className="flex flex-col gap-2 w-full">
           <h3 className="font-semibold">ОТР</h3>
@@ -79,10 +76,7 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
               })
             }
           />
-          <Data
-            label="Итого по ОТР"
-            value={getRepairTypePrice(selectedAct.ОТР, "ОТР")}
-          />
+          <Data label="Итого по ОТР" value={selectedAct.ОТР.стоимость} />
         </section>
       </div>
       <section className="flex flex-col gap-2">

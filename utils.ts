@@ -60,20 +60,8 @@ export const editCell = (
 
 export const getRepairPrice = (repair: Repair, type: RepairType) => {
   let price = 0;
-  repair.работы.map((work) => {
-    const pricelistWork = getWorks(type).find((priceListWork: Work) =>
-      type === "ППР"
-        ? getWorks(type).find((work: Work) =>
-            work["Содержание работ"].includes(work["Содержание работ"])
-          )["Стоимость"]
-        : priceListWork["Содержание работ"]
-            .replaceAll(/[0-9]/g, "")
-            .replaceAll(" ", "") ===
-          work["Содержание работ"].replaceAll(/[0-9]/g, "").replaceAll(" ", "")
-    );
-    const цена = pricelistWork ? pricelistWork["Стоимость"] : 0;
-    price += цена;
-  });
+  const works = getWorks(type);
+  repair.работы.map((work) => (price += works[work["Содержание работ"]]));
   return price;
 };
 
@@ -95,7 +83,9 @@ export const getRepairTypePrice = (
   type: RepairType
 ) => {
   let price = 0;
-  repairType.ремонты.map((repair) => (price += getRepairsPrice(repair, type)));
+  repairType?.ремонты?.map(
+    (repair) => (price += getRepairsPrice(repair, type))
+  );
   return price;
 };
 
@@ -138,16 +128,11 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
   } приложения №${type === "ППР" ? 4 : 5}).`.replaceAll("  ", " ");
 };
 
-export const getWorks = (type: RepairType): any[] =>
+export const getWorks = (type: RepairType) =>
   type === "ППР"
-    ? ppr
-        .map((repairType) =>
-          repairType.работы.map((work) => ({
-            ...work,
-            "№ п.п.": `${repairType.номер}.${work["№ п.п."]}`,
-          }))
-        )
-        .flat()
+    ? Object.fromEntries(
+        ppr.map((group) => Object.entries(group.работы)).flat()
+      )
     : otr;
 
 export const getSeasonColor = (date: string) => {
