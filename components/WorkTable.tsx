@@ -1,14 +1,9 @@
-import { getEmptyWork, measurementUnits } from "@/consts";
-import { useStore } from "@/pages/_app";
-import { InputOption, Repair, Work } from "@/types";
-import {
-  getRepairDescription,
-  getRepairPrice,
-  getWorkNames,
-  toOptions,
-} from "@/utils";
-import { observer } from "mobx-react";
+import { measurementUnits } from "@/consts";
 import { Input } from "@/equix/Input";
+import { useStore } from "@/pages/_app";
+import { InputOption, Repair } from "@/types";
+import { getRepairDescription, getWorks, toOptions } from "@/utils";
+import { observer } from "mobx-react";
 
 export const WorkTable = observer(() => {
   const {
@@ -21,11 +16,7 @@ export const WorkTable = observer(() => {
     getSelectedWorks,
   } = useStore();
 
-  const workOptions = toOptions(
-    getWorkNames(selectedRepairType).map(
-      (work: Work) => `${work["№ п.п."]} ${work["Содержание работ"]}`
-    )
-  );
+  const workOptions = toOptions(Object.keys(getWorks(selectedRepairType)));
 
   const updateDescription = () =>
     setSelectedRepair({
@@ -59,24 +50,11 @@ export const WorkTable = observer(() => {
                   updateWork(work.id, {
                     ...work,
                     "Содержание работ": value.name,
-                    цена: getWorkNames(selectedRepairType).find((work) =>
-                      selectedRepairType === "ППР"
-                        ? value.name
-                            .replaceAll(/[0-9]/g, "")
-                            .replaceAll(" ", "")
-                            .includes(
-                              work["Содержание работ"]
-                                .replaceAll(/[0-9]/g, "")
-                                .replaceAll(" ", "")
-                            )
-                        : work["Содержание работ"]
-                            .replaceAll(/[0-9]/g, "")
-                            .replaceAll(" ", "") ===
-                          value.name
-                            .replaceAll(/[0-9]/g, "")
-                            .replaceAll(" ", "")
-                    )["Стоимость"],
+                    цена: getWorks(selectedRepairType)[
+                      work["Содержание работ"]
+                    ],
                   });
+                  alert(getWorks(selectedRepairType)[work["Содержание работ"]]);
                   updateDescription();
                 }}
               />
@@ -89,7 +67,7 @@ export const WorkTable = observer(() => {
                 onChange={(value: string) => {
                   updateWork(work.id, {
                     ...work,
-                    количество: parseInt(value),
+                    количество: value,
                   });
                   updateDescription();
                 }}

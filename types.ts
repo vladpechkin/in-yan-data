@@ -14,19 +14,13 @@ export interface Work {
   "Содержание работ": string;
   единицаИзмерения: MeasurementUnit;
   цена: number;
-  количество: number;
+  количество: string;
 }
 
 export interface RepairObject {
   id: string;
   корпус: string;
   оборудование: Machine[];
-}
-
-interface Employee {
-  "Ф.И.О.": string;
-  Должность: string;
-  Компания: string;
 }
 
 export interface Shift {

@@ -53,22 +53,27 @@ const Page = observer(() => {
               Записать изменения
             </button>
           </ul>
-          {(selectedAct.ППР.ремонты[0]?.работы[0]["Содержание работ"] ||
-            selectedAct.ОТР.ремонты[0]?.работы[0]["Содержание работ"]) && (
-            <ul>
-              <button
-                onClick={() =>
-                  overwriteAct(selectedAct, (worksheet) => {
-                    const workbook = utils.book_new();
-                    utils.book_append_sheet(workbook, worksheet, "Лист 1");
-                    writeFile(workbook, "Акт.xls");
-                  })
-                }
-              >
-                Открыть файл
-              </button>
-            </ul>
-          )}
+          {/* {(selectedAct.ППР.ремонты[0]?.работы[0]["Содержание работ"] ||
+            selectedAct.ОТР.ремонты[0]?.работы[0]["Содержание работ"]) && ( */}
+          <ul>
+            <button
+              onClick={() =>
+                fetch("/api/sheet", {
+                  method: "POST",
+                  body: JSON.stringify(selectedAct),
+                }).then(
+                  () => {}
+                  // window.open(
+                  //   "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
+                  //   "_blank"
+                  // )
+                )
+              }
+            >
+              Открыть файл
+            </button>
+          </ul>
+          {/* )} */}
           <ul>
             <button
               className="text-red-600"

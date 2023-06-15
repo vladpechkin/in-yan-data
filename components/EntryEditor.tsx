@@ -3,7 +3,7 @@ import { DateInput } from "@/equix/Input/Date";
 import { productionOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, RepairType } from "@/types";
-import { getActPrice, getRepairTypePrice, toOptions } from "@/utils";
+import { getActPrice, toOptions } from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
 import { Data, Row } from "../equix/Data";

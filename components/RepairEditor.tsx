@@ -1,3 +1,7 @@
+import { Row } from "@/equix/Data";
+import { Dialog } from "@/equix/Dialog";
+import { Input } from "@/equix/Input";
+import { Textarea } from "@/equix/Textarea";
 import { areaOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, Work } from "@/types";
@@ -5,15 +9,10 @@ import {
   getRepairAmount,
   getRepairDescription,
   getRepairPrice,
-  getWorkNames,
+  getWorks,
 } from "@/utils";
 import { observer } from "mobx-react";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Row } from "@/equix/Data";
-import { Dialog } from "@/equix/Dialog";
-import { Input } from "@/equix/Input";
-import { Textarea } from "@/equix/Textarea";
 import { RepairObjectTable } from "./RepairObjectTable";
 import { ShiftTable } from "./ShiftTable";
 import { WorkTable } from "./WorkTable";
@@ -100,15 +99,8 @@ export const RepairEditor = observer(() => {
             onClick={() => {
               let selectedRepairPrice = 0;
               getSelectedRepair().работы.map((work: Work) => {
-                selectedRepairPrice += getWorkNames(selectedRepairType).find(
-                  (pricelistWork) =>
-                    pricelistWork["Содержание работ"]
-                      .replaceAll(/[0-9]/g, "")
-                      .replaceAll(" ", "") ===
-                    work["Содержание работ"]
-                      .replaceAll(/[0-9]/g, "")
-                      .replaceAll(" ", "")
-                )["Стоимость"];
+                selectedRepairPrice +=
+                  getWorks(selectedRepairType)[work["Содержание работ"]];
               });
               setSelectedRepair({
                 сумма: selectedRepairPrice,
