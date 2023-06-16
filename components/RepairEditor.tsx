@@ -99,8 +99,7 @@ export const RepairEditor = observer(() => {
             onClick={() => {
               let selectedRepairPrice = 0;
               getSelectedRepair().работы.map((work: Work) => {
-                selectedRepairPrice +=
-                  getWorks(selectedRepairType)[work["Содержание работ"]];
+                selectedRepairPrice += getWorks(selectedRepairType)[work["Содержание работ"]] * parseInt(work.количество);
               });
               setSelectedRepair({
                 сумма: selectedRepairPrice,

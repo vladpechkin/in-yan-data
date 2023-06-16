@@ -40,7 +40,7 @@ export const RepairTable: FC<Props> = observer(
                 <td>{repair.описание}</td>
                 <td>{repair.работы[0].единицаИзмерения}</td>
                 <td>
-                  {repair.объектыРемонта.map((obj) => obj.оборудование).length}
+                  {(repair.работы.map(work => work.количество)).reduce((partialSum, a) => partialSum + parseInt(a), 0)}
                 </td>
                 <td>{repair.сумма}</td>
                 <td>
