@@ -1,4 +1,4 @@
-import {measurementUnits} from "@/consts";
+    import {measurementUnits} from "@/consts";
 import {Input} from "@/equix/Input";
 import {useStore} from "@/pages/_app";
 import {InputOption, Repair} from "@/types";
@@ -48,7 +48,6 @@ export const WorkTable = observer(() => {
                                 )}
                                 isCollapsed
                                 onChange={(value: InputOption) => {
-                                    console.log(value)
                                     work["Содержание работ"] = value.name
                                     work["цена"] = getWorks(selectedRepairType)[work["Содержание работ"]]
 
@@ -67,7 +66,6 @@ export const WorkTable = observer(() => {
                                         ...work,
                                         количество: value,
                                     });
-                                    setSelectedRepair()
                                     updateDescription();
                                 }}
                             />
