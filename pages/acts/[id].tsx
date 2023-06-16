@@ -3,11 +3,15 @@ import { RepairEditor } from "@/components/RepairEditor";
 import { getEmptyAct } from "@/consts";
 import { Layout } from "@/equix/Layout";
 import { overwriteAct } from "@/overwriteAct";
+import { format, getActPrice, getRepairPrice } from "@/utils";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { utils, writeFile } from "xlsx";
 import { useStore } from "../_app";
+
+// @ts-ignore
+import { rubles } from "rubles";
 
 const Page = observer(() => {
   const {
@@ -60,7 +64,14 @@ const Page = observer(() => {
               onClick={() =>
                 fetch("/api/sheet", {
                   method: "POST",
-                  body: JSON.stringify(selectedAct),
+                  body: JSON.stringify({
+                    ...selectedAct,
+                    price: getActPrice(selectedAct),
+                    priceRub: rubles(
+                      getActPrice(selectedAct) * 1.2
+                    ).toLocaleString("ru"),
+                    ndsRub: rubles(getActPrice(selectedAct) * 0.2),
+                  }),
                 }).then(
                   () => {}
                   // window.open(
