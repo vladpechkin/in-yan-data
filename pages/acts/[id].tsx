@@ -75,12 +75,11 @@ const Page = observer(() => {
                         .map((r) => r.сумма)
                         .reduce((partialSum, a) => partialSum + a, 0),
                     }),
-                  }).then(
-                    () => {}
-                    // window.open(
-                    //   "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
-                    //   "_blank"
-                    // )
+                  }).then(() =>
+                    window.open(
+                      "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
+                      "_blank"
+                    )
                   )
                 }
               >
