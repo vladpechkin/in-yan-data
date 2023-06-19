@@ -2,7 +2,7 @@ import { EntryEditor } from "@/components/EntryEditor";
 import { RepairEditor } from "@/components/RepairEditor";
 import { getEmptyAct } from "@/consts";
 import { Layout } from "@/equix/Layout";
-import { getActPrice } from "@/utils";
+import { getActPrice, getRepairPrice } from "@/utils";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import { useStore } from "../_app";
 
 // @ts-ignore
 import { rubles } from "rubles";
+import { Repair } from "@/types";
 
 const Page = observer(() => {
   const {
@@ -67,6 +68,12 @@ const Page = observer(() => {
                         getActPrice(selectedAct) * 1.2
                       ).toLocaleString("ru"),
                       ndsRub: rubles(getActPrice(selectedAct) * 0.2),
+                      pprPrice: (selectedAct.ППР.ремонты as Repair[])
+                        .map((r) => r.сумма)
+                        .reduce((partialSum, a) => partialSum + a, 0),
+                      otrPrice: (selectedAct.ОТР.ремонты as Repair[])
+                        .map((r) => r.сумма)
+                        .reduce((partialSum, a) => partialSum + a, 0),
                     }),
                   }).then(
                     () => {}
