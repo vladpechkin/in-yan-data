@@ -76,7 +76,7 @@ const Page = observer(() => {
                         .reduce((partialSum, a) => partialSum + a, 0),
                     }),
                   }).then(() =>
-                    window.open(
+                    router.push(
                       "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
                       "_blank"
                     )
