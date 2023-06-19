@@ -108,7 +108,7 @@ export const getEmptyShift = (): Shift => ({
 export const getEmptyWork = (): Work => ({
   id: uuidv4(),
   единицаИзмерения: "шт.",
-  количество: 1,
+  количество: "1",
   "Содержание работ": "",
   цена: 0,
 });
@@ -127,6 +127,7 @@ export const getEmptyRepair = (): Repair => ({
   описание: "Выполнено: ",
   работы: [getEmptyWork()],
   смены: [getEmptyShift()],
+  сумма: 0
 });
 
 export const getEmptyAct = (): Act => ({
@@ -134,10 +135,12 @@ export const getEmptyAct = (): Act => ({
   ППР: {
     наряды: "",
     ремонты: [],
+    стоимость: 0
   },
   ОТР: {
     наряды: "",
     ремонты: [],
+    стоимость: 0
   },
   выделен: false,
   отчетныйПериод: new Date()
