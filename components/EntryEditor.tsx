@@ -2,7 +2,7 @@ import { actStates } from "@/consts";
 import { DateInput } from "@/equix/Input/Date";
 import { productionOptions } from "@/options";
 import { useStore } from "@/pages/_app";
-import {InputOption, Repair, RepairType} from "@/types";
+import { InputOption, Repair, RepairType } from "@/types";
 import { getActPrice, toOptions } from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
@@ -48,7 +48,12 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
               });
             }}
           />
-          <Data label="Итого по ППР" value={(selectedAct.ППР.ремонты as Repair[]).map(r => r.сумма).reduce((partialSum, a) => partialSum + a, 0)} />
+          <Data
+            label="Итого по ППР"
+            value={(selectedAct.ППР.ремонты as Repair[])
+              .map((r) => r.сумма)
+              .reduce((partialSum, a) => partialSum + a, 0)}
+          />
         </section>
         <section className="flex flex-col gap-2 w-full">
           <h3 className="font-semibold">ОТР</h3>
@@ -76,7 +81,12 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
               })
             }
           />
-          <Data label="Итого по ОТР" value={selectedAct.ОТР.стоимость} />
+          <Data
+            label="Итого по ОТР"
+            value={(selectedAct.ОТР.ремонты as Repair[])
+              .map((r) => r.сумма)
+              .reduce((partialSum, a) => partialSum + a, 0)}
+          />
         </section>
       </div>
       <section className="flex flex-col gap-2">

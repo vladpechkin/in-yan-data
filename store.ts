@@ -65,7 +65,7 @@ export const createStore = (): Store => ({
       body: JSON.stringify(this.selectedAct),
     })
       .then((res) => res.json())
-      .then(alert);
+      .then(() => alert("Сохранено"));
   },
   deleteAct() {
     fetch(`/api/acts/${this.selectedAct.id}`, {
@@ -75,7 +75,7 @@ export const createStore = (): Store => ({
       },
     })
       .then((res) => res.json())
-      .then(alert);
+      .then(() => alert("Удалено"));
   },
 
   saveRepair() {

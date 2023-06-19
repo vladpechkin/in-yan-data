@@ -18,6 +18,13 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/sheet.js",
+    "pages/api/acts/index.js",
+    "pages/api/acts/[id].js"
+  ],
   "exclude": ["node_modules"]
 }
