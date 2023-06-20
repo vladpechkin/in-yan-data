@@ -4,6 +4,7 @@ import { useStore } from "@/pages/_app";
 import { InputOption, Repair } from "@/types";
 import { getRepairDescription, getWorks, toOptions } from "@/utils";
 import { observer } from "mobx-react";
+import { useState } from "react";
 
 export const WorkTable = observer(() => {
   const {
@@ -22,6 +23,8 @@ export const WorkTable = observer(() => {
     setSelectedRepair({
       описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
+
+  const [isRadioOpen, setIsRadioOpen] = useState(false);
 
   return (
     <table className="w-full">
@@ -47,6 +50,7 @@ export const WorkTable = observer(() => {
                     work["Содержание работ"].includes(option.name)
                   )}
                   isCollapsed
+                  isDialogOpen={isRadioOpen}
                   onChange={(value: InputOption) => {
                     work["Содержание работ"] = value.name;
                     work["цена"] =
@@ -111,11 +115,30 @@ export const WorkTable = observer(() => {
           );
         })}
         <tr>
-          <td colSpan={100}>
+          <td></td>
+          <td>
+            <Input
+              type="text"
+              size={4}
+              value={""}
+              label="Все кол-ва"
+              onChange={(value: string) =>
+                (selectedRepair as Repair).работы.map((work) => {
+                  updateWork(work.id, {
+                    ...work,
+                    количество: value,
+                  });
+                  updateDescription();
+                })
+              }
+            />
+          </td>
+          <td colSpan={3}>
             <button
               className="w-full"
               onClick={() => {
                 createWork();
+                setIsRadioOpen(true);
               }}
             >
               Добавить

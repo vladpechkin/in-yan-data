@@ -14,6 +14,7 @@ export interface RadioProps extends BaseInputProps {
   value?: InputOption;
   onChange: OnChange | NullableOnChange;
   isCollapsed?: boolean;
+  isDialogOpen?: boolean;
 }
 
 export const Radio: FC<RadioProps> = ({
@@ -23,6 +24,7 @@ export const Radio: FC<RadioProps> = ({
   value = null,
   onChange,
   className,
+  isDialogOpen = false,
   isCollapsed = options?.length > 5 ? true : false,
 }) => {
   const handleChange = (option: InputOption) => {
@@ -31,10 +33,10 @@ export const Radio: FC<RadioProps> = ({
     // @ts-ignore
     onChange(value?.id === option.id ? null : option);
 
-    if (isDialogOpen) setIsDialogOpen(false);
+    if (isOpen) setIsOpen(false);
   };
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isDialogOpen);
   const [searchQuery, setSearchQuery] = useState("");
 
   const renderOptions = (options: InputOption[]) => (
@@ -69,10 +71,7 @@ export const Radio: FC<RadioProps> = ({
             <span className={value ? "" : "text-gray-400"}>
               {value?.name || "Не выбрано"}
             </span>
-            <button
-              className="self-start"
-              onClick={() => setIsDialogOpen(true)}
-            >
+            <button className="self-start" onClick={() => setIsOpen(true)}>
               {value ? "Изменить" : "Выбрать"}
             </button>
           </>
@@ -82,11 +81,7 @@ export const Radio: FC<RadioProps> = ({
           </div>
         )}
       </InputBase>
-      <Dialog
-        title={label!}
-        isOpen={isDialogOpen}
-        close={() => setIsDialogOpen(false)}
-      >
+      <Dialog title={label!} isOpen={isOpen} close={() => setIsOpen(false)}>
         {options.length > 10 && (
           <Input
             type="search"

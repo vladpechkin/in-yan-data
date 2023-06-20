@@ -153,3 +153,6 @@ export const format = (string: string | number) =>
   string
     .toLocaleString("ru", { style: "currency", currency: "RUB" })
     .replace("₽", "");
+
+export const capitalize = (word: string) =>
+  word.charAt(0).toUpperCase() + word.slice(1);

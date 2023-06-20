@@ -2,7 +2,7 @@ import { EntryEditor } from "@/components/EntryEditor";
 import { RepairEditor } from "@/components/RepairEditor";
 import { getEmptyAct } from "@/consts";
 import { Layout } from "@/equix/Layout";
-import { getActPrice, getRepairPrice } from "@/utils";
+import { capitalize, getActPrice, getRepairPrice } from "@/utils";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -64,10 +64,14 @@ const Page = observer(() => {
                     body: JSON.stringify({
                       ...selectedAct,
                       price: getActPrice(selectedAct),
-                      priceRub: rubles(
-                        getActPrice(selectedAct) * 1.2
-                      ).toLocaleString("ru"),
-                      ndsRub: rubles(getActPrice(selectedAct) * 0.2),
+                      priceRub: capitalize(
+                        rubles(getActPrice(selectedAct) * 1.2).toLocaleString(
+                          "ru"
+                        )
+                      ),
+                      ndsRub: capitalize(
+                        rubles(getActPrice(selectedAct) * 0.2)
+                      ),
                       pprPrice: (selectedAct.ППР.ремонты as Repair[])
                         .map((r) => r.сумма)
                         .reduce((partialSum, a) => partialSum + a, 0),
