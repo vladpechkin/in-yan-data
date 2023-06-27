@@ -5,6 +5,9 @@ import {
   getEmptyWork,
 } from "./consts";
 import { Act, Repair, RepairObject, RepairType, Shift, Work } from "./types";
+import { capitalize, getActPrice } from "./utils";
+// @ts-ignore
+import { rubles } from "rubles";
 
 interface Store {
   selectedAct: Act;
@@ -17,6 +20,7 @@ interface Store {
 
   saveAct: (method: string) => void;
   deleteAct: (id: string) => void;
+  writeAct: () => void;
 
   saveRepair: () => void;
   deleteRepair: (id: string) => void;
@@ -76,6 +80,30 @@ export const createStore = (): Store => ({
     })
       .then((res) => res.json())
       .then(() => alert("Удалено"));
+  },
+  writeAct(){
+    const actPrice = getActPrice(this.selectedAct)
+    fetch("/api/sheet", {
+      method: "POST",
+      body: JSON.stringify({
+        ...this.selectedAct,
+        price: actPrice,
+        priceRub: capitalize(
+          rubles(actPrice * 1.2).toLocaleString(
+            "ru"
+          )
+        ),
+        ndsRub: capitalize(
+          rubles(actPrice * 0.2)
+        ),
+        pprPrice: (this.selectedAct.ППР.ремонты as Repair[])
+          .map((r) => r.сумма)
+          .reduce((partialSum, a) => partialSum + a, 0),
+        otrPrice: (this.selectedAct.ОТР.ремонты as Repair[])
+          .map((r) => r.сумма)
+          .reduce((partialSum, a) => partialSum + a, 0),
+      }),
+    })
   },
 
   saveRepair() {

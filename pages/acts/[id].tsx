@@ -2,15 +2,10 @@ import { EntryEditor } from "@/components/EntryEditor";
 import { RepairEditor } from "@/components/RepairEditor";
 import { getEmptyAct } from "@/consts";
 import { Layout } from "@/equix/Layout";
-import { capitalize, getActPrice, getRepairPrice } from "@/utils";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useStore } from "../_app";
-
-// @ts-ignore
-import { rubles } from "rubles";
-import { Repair } from "@/types";
 
 const Page = observer(() => {
   const {
@@ -20,6 +15,7 @@ const Page = observer(() => {
     saveAct,
     deleteAct,
     selectedRepair,
+    writeAct
   } = useStore();
 
   const router = useRouter();
@@ -44,68 +40,48 @@ const Page = observer(() => {
         <EntryEditor openRepairEditor={setSelectedRepairType} />
         {(selectedAct.ППР.ремонты.length > 0 ||
           selectedAct.ОТР.ремонты.length > 0) && (
-          <menu className="flex gap-4 mt-auto">
-            <ul>
-              <button
-                onClick={() => {
-                  saveAct(router.asPath.includes("new") ? "POST" : "PUT");
-                  router.reload();
-                  router.push("/acts");
-                }}
-              >
-                Записать изменения
-              </button>
-            </ul>
-            <ul>
-              <button
-                onClick={() =>
-                  fetch("/api/sheet", {
-                    method: "POST",
-                    body: JSON.stringify({
-                      ...selectedAct,
-                      price: getActPrice(selectedAct),
-                      priceRub: capitalize(
-                        rubles(getActPrice(selectedAct) * 1.2).toLocaleString(
-                          "ru"
-                        )
-                      ),
-                      ndsRub: capitalize(
-                        rubles(getActPrice(selectedAct) * 0.2)
-                      ),
-                      pprPrice: (selectedAct.ППР.ремонты as Repair[])
-                        .map((r) => r.сумма)
-                        .reduce((partialSum, a) => partialSum + a, 0),
-                      otrPrice: (selectedAct.ОТР.ремонты as Repair[])
-                        .map((r) => r.сумма)
-                        .reduce((partialSum, a) => partialSum + a, 0),
-                    }),
-                  }).then(() =>
-                    router.push(
-                      "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
-                      "_blank"
-                    )
-                  )
-                }
-              >
-                Открыть файл
-              </button>
-            </ul>
-            <ul>
-              <button
-                className="text-red-600"
-                onClick={() => {
-                  const confirmed = confirm("Подтвердите удаление");
-                  if (confirmed) {
-                    deleteAct();
+            <menu className="flex gap-4 mt-auto">
+              <ul>
+                <button
+                  onClick={() => {
+                    saveAct(router.asPath.includes("new") ? "POST" : "PUT");
+                    router.reload();
                     router.push("/acts");
+                  }}
+                >
+                  Записать изменения
+                </button>
+              </ul>
+              <ul>
+                <button
+                  onClick={() =>
+                    writeAct().then(() =>
+                      router.push(
+                        "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
+                        "_blank"
+                      )
+                    )
                   }
-                }}
-              >
-                Удалить
-              </button>
-            </ul>
-          </menu>
-        )}
+                >
+                  Открыть файл
+                </button>
+              </ul>
+              <ul>
+                <button
+                  className="text-red-600"
+                  onClick={() => {
+                    const confirmed = confirm("Подтвердите удаление");
+                    if (confirmed) {
+                      deleteAct();
+                      router.push("/acts");
+                    }
+                  }}
+                >
+                  Удалить
+                </button>
+              </ul>
+            </menu>
+          )}
       </Layout>
       {selectedRepair && <RepairEditor />}
     </>
