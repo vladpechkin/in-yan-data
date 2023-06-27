@@ -79,18 +79,12 @@ export const getRepairTypePrice = (
   repairType: {
     наряды: string;
     ремонты: Repair[];
-  },
-  type: RepairType
-) => {
-  let price = 0;
-  repairType?.ремонты?.map(
-    (repair) => (price += getRepairsPrice(repair, type))
-  );
-  return price;
-};
+  }) => (repairType.ремонты as Repair[])
+.map((r) => r.сумма)
+.reduce((partialSum, a) => partialSum + a, 0)
 
 export const getActPrice = (act: Act) =>
-  getRepairTypePrice(act.ППР, "ППР") + getRepairTypePrice(act.ОТР, "ОТР");
+  getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
 
 export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const machinery = repair?.объектыРемонта

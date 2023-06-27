@@ -1,4 +1,4 @@
-import { Act } from "@/types";
+import { Act, Repair } from "@/types";
 import { getActPrice, getRepairTypePrice } from "@/utils";
 import { observer } from "mobx-react";
 import Link from "next/link";
@@ -51,8 +51,14 @@ const Page = observer(() => {
                 <tr key={index} className={act.выделен ? "bg-blue-100" : ""}>
                   <td>{act.отчетныйПериод}</td>
                   <td>{act.производство}</td>
-                  <td>{getRepairTypePrice(act.ППР, "ППР")}</td>
-                  <td>{getRepairTypePrice(act.ОТР, "ОТР")}</td>
+                  <td>
+                    {(act.ППР.ремонты as Repair[])
+                      .map((r) => r.сумма)
+                      .reduce((partialSum, a) => partialSum + a, 0)}
+                  </td>
+                  <td>{(act.ОТР.ремонты as Repair[])
+              .map((r) => r.сумма)
+              .reduce((partialSum, a) => partialSum + a, 0)}</td>
                   <td>{actPrice}</td>
                   <td>{actPrice * 0.2}</td>
                   <td>{actPrice * 1.2}</td>
