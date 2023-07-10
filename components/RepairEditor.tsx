@@ -81,18 +81,6 @@ export const RepairEditor = observer(() => {
           onChange={(value: string) => setSelectedRepair({ описание: value })}
         />
       )}
-      <Row
-        {...[
-          {
-            label: "Кол-во оборудования",
-            value: getRepairAmount(selectedRepair),
-          },
-          {
-            label: "Итого по работам",
-            value: getRepairPrice(selectedRepair, selectedRepairType),
-          },
-        ]}
-      />
       <menu className="flex gap-4 mt-auto">
         <ul>
           <button

@@ -45,8 +45,8 @@ const Page = observer(() => {
                 <button
                   onClick={() => {
                     saveAct(router.asPath.includes("new") ? "POST" : "PUT");
-                    router.reload();
-                    router.push("/acts");
+                    router.push("/acts/");
+                    router.reload()
                   }}
                 >
                   Записать изменения
@@ -55,10 +55,10 @@ const Page = observer(() => {
               <ul>
                 <button
                   onClick={() =>
-                    writeAct().then(() =>
+                    writeAct()
+                    .then(() =>
                       router.push(
-                        "https://docs.google.com/spreadsheets/d/1nPNJ8RBplCF3UBPwGANsISG1F1xTRWMcvgEZqkeHkNQ/edit?usp=sharing",
-                        "_blank"
+                        'https://docs.google.com/spreadsheets/d/1S5nOSGna-covY3ZokHB0VkHwpo6Ybj17Q-jY9XkPpKY/edit#gid=305857577'
                       )
                     )
                   }
