@@ -60,18 +60,7 @@ export const WorkTable = observer(() => {
                 />
               </td>
               <td className="w-20">
-                <Input
-                  type="text"
-                  size={4}
-                  value={work.количество}
-                  onChange={(value: string) => {
-                    updateWork(work.id, {
-                      ...work,
-                      количество: value,
-                    });
-                    updateDescription();
-                  }}
-                />
+                {work.количество}
               </td>
               <td className="w-16">
                 {selectedRepairType === "ППР" ? (
