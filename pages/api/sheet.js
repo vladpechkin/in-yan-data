@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const result = await fetch(
-      "https://script.google.com/macros/s/AKfycbzZzwYFwxg4Lcij_RMbFxCabU0vnmvbhNJ4vaUe1A5bkg12zKo5jnaCcYgmQ6zPtdXN/exec",
+      "https://script.google.com/macros/s/AKfycbwyRhDB3st9I71SXgTywZhT-r_tBiFwOEzW2v8CjaCzoGEAvAlxBfnKmxYTsOoo4Mqn/exec",
       {
         method: "POST",
         body: req.body,
