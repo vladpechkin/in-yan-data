@@ -6,7 +6,7 @@ import { toOptions } from "./utils";
 
 export const productionOptions = toOptions(
   productions.map((production) =>
-    `${production.Код} ${production.Сокращение || ""} ${
+    `${production.Код} ${production.Сокращение || " "} ${
       production.Наименование
     }`.replaceAll("  ", " ")
   )
@@ -14,7 +14,7 @@ export const productionOptions = toOptions(
 
 export const buildingOptions = toOptions(
   buildings.map((building) =>
-    `${building.Код} ${building.Зона || ""} ${building.Наименование}`.replace(
+    `${building.Код} ${building.Зона || " "} ${building.Наименование}`.replace(
       "  ",
       ""
     )

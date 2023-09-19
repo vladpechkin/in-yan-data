@@ -109,7 +109,7 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
       (obj) =>
         `${obj.оборудование.join(", ")} в корп. ${obj.корпус
           .split(" ")[0]
-          .replaceAll(/[а-яА-Я]/g, "")}`
+          .replaceAll(/\s[а-яА-Я]/g, "")}`
     )
     .join("; ");
 

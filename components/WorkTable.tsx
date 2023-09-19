@@ -25,6 +25,7 @@ export const WorkTable = observer(() => {
     });
 
   const [isRadioOpen, setIsRadioOpen] = useState(false);
+  const [allAmounts, setAllAmounts] = useState("");
 
   return (
     <table className="w-full">
@@ -60,7 +61,22 @@ export const WorkTable = observer(() => {
                 />
               </td>
               <td className="w-20">
-                {work.количество}
+                {selectedRepairType === "ППР" ? (
+                  work.количество
+                ) : (
+                  <Input
+                    type="text"
+                    size={4}
+                    value={work.количество}
+                    onChange={(value: string) => {
+                      updateWork(work.id, {
+                        ...work,
+                        количество: value,
+                      });
+                      updateDescription();
+                    }}
+                  />
+                )}
               </td>
               <td className="w-16">
                 {selectedRepairType === "ППР" ? (
@@ -109,17 +125,18 @@ export const WorkTable = observer(() => {
             <Input
               type="text"
               size={4}
-              value={""}
+              value={allAmounts}
               label="Все кол-ва"
-              onChange={(value: string) =>
+              onChange={(value: string) => {
+                setAllAmounts(value);
                 (selectedRepair as Repair).работы.map((work) => {
                   updateWork(work.id, {
                     ...work,
                     количество: value,
                   });
                   updateDescription();
-                })
-              }
+                });
+              }}
             />
           </td>
           <td colSpan={3}>

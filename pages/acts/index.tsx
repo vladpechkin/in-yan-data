@@ -1,11 +1,10 @@
-import { Act } from "@/types";
+import { Act, Repair } from "@/types";
 import { getActPrice, getRepairTypePrice } from "@/utils";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "../../equix/Layout";
-import { useStore } from "../_app";
 
 const Page = observer(() => {
   const [acts, setActs] = useState([]);
@@ -52,7 +51,11 @@ const Page = observer(() => {
                   <td>{act.отчетныйПериод}</td>
                   <td>{act.производство}</td>
                   <td>{getRepairTypePrice(act.ППР)}</td>
-                  <td>{getRepairTypePrice(act.ОТР)}</td>
+                  <td>
+                    {(act.ОТР.ремонты as Repair[])
+                      .map((r) => r.сумма)
+                      .reduce((partialSum, a) => partialSum + a, 0)}
+                  </td>
                   <td>{actPrice}</td>
                   <td>{actPrice * 0.2}</td>
                   <td>{actPrice * 1.2}</td>
