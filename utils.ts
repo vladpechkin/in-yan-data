@@ -86,7 +86,7 @@ export const getRepairTypePrice = (
 export const getActPrice = (act: Act) =>
   getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
 
-export const getRepairDescription = (repair: Repair, type: RepairType, comment: string) => {
+export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const machinery = repair?.объектыРемонта
     ?.map((object) => object?.оборудование)
     .flat();

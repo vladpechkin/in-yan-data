@@ -14,14 +14,13 @@ export const WorkTable = observer(() => {
     deleteWork,
     updateWork,
     selectedRepairType,
-    comment
   } = useStore();
 
   const workOptions = toOptions(Object.keys(getWorks(selectedRepairType)));
 
   const updateDescription = () =>
     setSelectedRepair({
-      описание: getRepairDescription(selectedRepair, selectedRepairType, comment),
+      описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
 
   const [isRadioOpen, setIsRadioOpen] = useState(false);

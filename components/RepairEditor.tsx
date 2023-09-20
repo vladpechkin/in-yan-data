@@ -28,12 +28,11 @@ export const RepairEditor = observer(() => {
     selectedAct,
     setSelectedAct,
     getSelectedRepair,
-    comment
   } = useStore();
 
   useEffect(() => {
     setSelectedRepair({
-      описание: getRepairDescription(selectedRepair, selectedRepairType, comment),
+      описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
   }, []);
 

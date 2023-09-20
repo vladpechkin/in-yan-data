@@ -17,14 +17,11 @@ export const RepairObjectTable = observer(() => {
     selectedRepairType,
   } = useStore();
 
-  const [comment, setComment] = useState("");
-
   const updateDescription = () =>
     setSelectedRepair({
       описание: getRepairDescription(
         selectedRepair,
-        selectedRepairType,
-        comment
+        selectedRepairType
       ),
     });
 
@@ -32,7 +29,7 @@ export const RepairObjectTable = observer(() => {
     <table className="w-full">
       <tbody>
         <tr>
-          <th colSpan={100}>Объекты проведения ремонта</th>
+          <th colSpan={100}>Наряды</th>
         </tr>
         <tr>
           <td>Корпус</td>
