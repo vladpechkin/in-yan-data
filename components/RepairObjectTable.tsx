@@ -1,10 +1,11 @@
 import { machinery } from "@/consts";
+import { Input } from "@/equix/Input";
 import { buildingOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, Repair } from "@/types";
 import { getRepairDescription, toOptions } from "@/utils";
 import { observer } from "mobx-react";
-import { Input } from "@/equix/Input";
+import { useState } from "react";
 
 export const RepairObjectTable = observer(() => {
   const {
@@ -16,9 +17,15 @@ export const RepairObjectTable = observer(() => {
     selectedRepairType,
   } = useStore();
 
+  const [comment, setComment] = useState("");
+
   const updateDescription = () =>
     setSelectedRepair({
-      описание: getRepairDescription(selectedRepair, selectedRepairType),
+      описание: getRepairDescription(
+        selectedRepair,
+        selectedRepairType,
+        comment
+      ),
     });
 
   return (
@@ -28,10 +35,11 @@ export const RepairObjectTable = observer(() => {
           <th colSpan={100}>Объекты проведения ремонта</th>
         </tr>
         <tr>
-          <th>Корпус</th>
-          <th>Оборудование</th>
+          <td>Корпус</td>
+          <td>Оборудование</td>
+          <td>Комментарий</td>
           {(selectedRepair as Repair).объектыРемонта.length > 1 && (
-            <th>Действия</th>
+            <td>Действия</td>
           )}
         </tr>
         {(selectedRepair as Repair).объектыРемонта.map((object, index) => (
@@ -69,6 +77,18 @@ export const RepairObjectTable = observer(() => {
                 }}
                 isCollapsed
                 className="w-4/5"
+              />
+            </td>
+            <td>
+              <Input
+                value={object.comment}
+                onChange={(value: string) => {
+                  updateRepairObject(object.id, {
+                    ...object,
+                    comment: value,
+                  });
+                  updateDescription();
+                }}
               />
             </td>
             {(selectedRepair as Repair).объектыРемонта.length > 1 && (

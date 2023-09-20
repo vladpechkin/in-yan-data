@@ -13,6 +13,7 @@ interface Store {
   selectedAct: Act;
   selectedRepairType: null | RepairType;
   selectedRepair: null | Repair;
+  comment: string;
   setSelectedRepairType: (type: RepairType) => void;
 
   setSelectedAct: (act: Partial<Act>) => void;
@@ -40,12 +41,18 @@ interface Store {
   getSelectedWorks: () => void;
 
   getSelectedRepair: () => void;
+
+  setComment: (value:string) => void;
 }
 
 export const createStore = (): Store => ({
   selectedAct: getEmptyAct(),
   selectedRepairType: null,
   selectedRepair: null,
+  comment: "",
+  setComment(value) {
+    this.comment = value;
+  }, 
   getSelectedRepair() {
     return this.selectedRepair;
   },

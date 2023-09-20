@@ -117,6 +117,7 @@ export const getEmptyRepairObject = (): RepairObject => ({
   id: uuidv4(),
   корпус: "",
   оборудование: [],
+  comment: ""
 });
 
 export const getEmptyRepair = (): Repair => ({

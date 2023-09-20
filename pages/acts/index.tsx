@@ -30,16 +30,16 @@ const Page = observer(() => {
       <table className="w-full">
         <thead>
           <tr>
-            <th className="w-16">Отчетный период</th>
-            <th>Производство</th>
-            <th>Сумма ППР</th>
-            <th>Сумма ОТР</th>
-            <th>Итого</th>
-            <th>НДС</th>
-            <th>Итого с НДС</th>
-            <th>Состояние</th>
-            <th>Примечание</th>
-            <th className="w-16">Действия</th>
+            <td className="w-16">Отчетный период</td>
+            <td>Производство</td>
+            <td>Сумма ППР</td>
+            <td>Сумма ОТР</td>
+            <td>Итого</td>
+            <td>НДС</td>
+            <td>Итого с НДС</td>
+            <td>Состояние</td>
+            <td>Примечание</td>
+            <td className="w-16">Действия</td>
           </tr>
         </thead>
         <tbody>

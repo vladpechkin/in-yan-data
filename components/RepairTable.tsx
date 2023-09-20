@@ -25,12 +25,12 @@ export const RepairTable: FC<Props> = observer(
           </tr>
           {repairs.length > 0 && (
             <tr>
-              <th>№</th>
-              <th>Наименование работ</th>
-              <th>Ед. изм.</th>
-              <th>Кол-во</th>
-              <th>Сумма</th>
-              <th>Действия</th>
+              <td>№</td>
+              <td>Наименование работ</td>
+              <td>Ед. изм.</td>
+              <td>Кол-во</td>
+              <td>Сумма</td>
+              <td>Действия</td>
             </tr>
           )}
           {repairs.length > 0 ? (

@@ -86,7 +86,7 @@ export const getRepairTypePrice = (
 export const getActPrice = (act: Act) =>
   getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
 
-export const getRepairDescription = (repair: Repair, type: RepairType) => {
+export const getRepairDescription = (repair: Repair, type: RepairType, comment: string) => {
   const machinery = repair?.объектыРемонта
     ?.map((object) => object?.оборудование)
     .flat();
@@ -107,7 +107,7 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const objs = repair.объектыРемонта
     .map(
       (obj) =>
-        `${obj.оборудование.join(", ")} в корп. ${obj.корпус
+        `${obj.оборудование.join(`, `)} ${obj.comment} в корп. ${obj.корпус
           .split(" ")[0]
           .replaceAll(/\s[а-яА-Я]/g, "")}`
     )

@@ -92,7 +92,7 @@ export const EntitiesEditor: FC<Props> = ({
               </tr>
               <tr>
                 {entityKeys.map((key, index) => (
-                  <th key={index}>{key}</th>
+                  <td key={index}>{key}</td>
                 ))}
               </tr>
             </thead>

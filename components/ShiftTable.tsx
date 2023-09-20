@@ -14,9 +14,9 @@ export const ShiftTable = observer(() => {
           <th colSpan={100}>Смены</th>
         </tr>
         <tr>
-          <th>Дата</th>
-          <th>Сотрудники</th>
-          <th>Действия</th>
+          <td>Дата</td>
+          <td>Сотрудники</td>
+          <td>Действия</td>
         </tr>
         {(selectedRepair as Repair).смены.map((shift, index) => (
           <tr key={index}>

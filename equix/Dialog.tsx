@@ -48,7 +48,7 @@ export const Dialog: FC<Props> = ({
   return isOpen ? (
     <div className="w-full h-full bg-black absolute top-0 left-0 bg-opacity-50 flex overflow-y-auto z-10">
       <dialog
-        className={`bg-white p-4 flex flex-col gap-4 min-w-[320px] max-w-screen-sm shadow-2xl sm:mt-0 overflow-y-auto ${
+        className={`bg-white p-4 flex flex-col gap-4 min-w-[320px] max-w-screen-md shadow-2xl sm:mt-0 overflow-y-auto ${
           className || ""
         }`}
         onClick={(e) => e.stopPropagation()}

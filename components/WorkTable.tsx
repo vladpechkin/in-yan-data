@@ -14,14 +14,14 @@ export const WorkTable = observer(() => {
     deleteWork,
     updateWork,
     selectedRepairType,
-    getSelectedWorks,
+    comment
   } = useStore();
 
   const workOptions = toOptions(Object.keys(getWorks(selectedRepairType)));
 
   const updateDescription = () =>
     setSelectedRepair({
-      описание: getRepairDescription(selectedRepair, selectedRepairType),
+      описание: getRepairDescription(selectedRepair, selectedRepairType, comment),
     });
 
   const [isRadioOpen, setIsRadioOpen] = useState(false);
@@ -34,11 +34,11 @@ export const WorkTable = observer(() => {
           <th colSpan={100}>Проведенные работы</th>
         </tr>
         <tr>
-          <th>Тип работы</th>
-          <th>Кол-во</th>
-          <th>Ед. изм.</th>
-          <th>Цена</th>
-          {(selectedRepair as Repair).работы.length > 1 && <th>Действия</th>}
+          <td>Тип работы</td>
+          <td>Кол-во</td>
+          <td>Ед. изм.</td>
+          <td>Цена</td>
+          {(selectedRepair as Repair).работы.length > 1 && <td>Действия</td>}
         </tr>
         {(selectedRepair as Repair).работы.map((work, index) => {
           return (
