@@ -5,7 +5,6 @@ import { useStore } from "@/pages/_app";
 import { InputOption, Repair } from "@/types";
 import { getRepairDescription, toOptions } from "@/utils";
 import { observer } from "mobx-react";
-import { useState } from "react";
 
 export const RepairObjectTable = observer(() => {
   const {
@@ -19,10 +18,7 @@ export const RepairObjectTable = observer(() => {
 
   const updateDescription = () =>
     setSelectedRepair({
-      описание: getRepairDescription(
-        selectedRepair,
-        selectedRepairType
-      ),
+      описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
 
   return (
@@ -34,7 +30,6 @@ export const RepairObjectTable = observer(() => {
         <tr>
           <td>Корпус</td>
           <td>Оборудование</td>
-          <td>Комментарий</td>
           {(selectedRepair as Repair).объектыРемонта.length > 1 && (
             <td>Действия</td>
           )}
@@ -59,34 +54,34 @@ export const RepairObjectTable = observer(() => {
               />
             </td>
             <td>
-              <Input
-                type="checkbox"
-                options={toOptions(machinery)}
-                value={toOptions(machinery).filter((machine) =>
-                  object.оборудование.includes(machine.name)
-                )}
-                onChange={(value: InputOption[]) => {
-                  updateRepairObject(object.id, {
-                    ...object,
-                    оборудование: value.map(({ name }) => name),
-                  });
-                  updateDescription();
-                }}
-                isCollapsed
-                className="w-4/5"
-              />
-            </td>
-            <td>
-              <Input
-                value={object.comment}
-                onChange={(value: string) => {
-                  updateRepairObject(object.id, {
-                    ...object,
-                    comment: value,
-                  });
-                  updateDescription();
-                }}
-              />
+              <div className="flex">
+                <Input
+                  type="checkbox"
+                  options={toOptions(machinery)}
+                  value={toOptions(machinery).filter((machine) =>
+                    object.оборудование.includes(machine.name)
+                  )}
+                  onChange={(value: InputOption[]) => {
+                    updateRepairObject(object.id, {
+                      ...object,
+                      оборудование: value.map(({ name }) => name),
+                    });
+                    updateDescription();
+                  }}
+                  isCollapsed
+                  className="w-4/5"
+                />
+                <Input
+                  value={object.comment}
+                  onChange={(value: string) => {
+                    updateRepairObject(object.id, {
+                      ...object,
+                      comment: value,
+                    });
+                    updateDescription();
+                  }}
+                />
+              </div>
             </td>
             {(selectedRepair as Repair).объектыРемонта.length > 1 && (
               <td className="w-20">

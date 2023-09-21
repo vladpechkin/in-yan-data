@@ -72,7 +72,7 @@ export const Radio: FC<RadioProps> = ({
               {value?.name || "Не выбрано"}
             </span>
             <button className="self-start" onClick={() => setIsOpen(true)}>
-              {value ? "Изменить" : "Выбрать"}
+              Выбрать
             </button>
           </>
         ) : (

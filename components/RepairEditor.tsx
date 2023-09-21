@@ -1,15 +1,12 @@
-import { Row } from "@/equix/Data";
 import { Dialog } from "@/equix/Dialog";
 import { Input } from "@/equix/Input";
-import { Textarea } from "@/equix/Textarea";
 import { areaOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, Work } from "@/types";
 import {
-  getRepairAmount,
   getRepairDescription,
   getRepairPrice,
-  getWorks,
+  getWorks
 } from "@/utils";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
@@ -74,12 +71,7 @@ export const RepairEditor = observer(() => {
         </>
       )}
       {selectedRepair.работы[0]["Содержание работ"] && (
-        <Textarea
-          label="Описание ремонта"
-          className="h-40"
-          value={selectedRepair.описание}
-          onChange={(value: string) => setSelectedRepair({ описание: value })}
-        />
+        selectedRepair.описание
       )}
       <menu className="flex gap-4 mt-auto">
         <ul>
@@ -87,7 +79,9 @@ export const RepairEditor = observer(() => {
             onClick={() => {
               let selectedRepairPrice = 0;
               getSelectedRepair().работы.map((work: Work) => {
-                selectedRepairPrice += getWorks(selectedRepairType)[work["Содержание работ"]] * parseInt(work.количество);
+                selectedRepairPrice +=
+                  getWorks(selectedRepairType)[work["Содержание работ"]] *
+                  parseInt(work.количество);
               });
               setSelectedRepair({
                 сумма: selectedRepairPrice,

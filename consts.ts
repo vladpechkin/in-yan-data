@@ -9,7 +9,6 @@ export const prejskuranti = [
       "преобразователь давления",
       "преобразователь температуры",
       "манометр",
-      "_ИНОЕ ОБОРУДОВАНИЕ_",
     ],
   },
   {
@@ -111,6 +110,7 @@ export const getEmptyWork = (): Work => ({
   количество: "1",
   "Содержание работ": "",
   цена: 0,
+  comment: ""
 });
 
 export const getEmptyRepairObject = (): RepairObject => ({

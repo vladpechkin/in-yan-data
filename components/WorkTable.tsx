@@ -34,7 +34,27 @@ export const WorkTable = observer(() => {
         </tr>
         <tr>
           <td>Тип работы</td>
-          <td>Кол-во</td>
+          <td className="w-40">
+            <div className="flex gap-2 items-center">
+              Колво
+              <Input
+                type="text"
+                size={4}
+                value={allAmounts}
+                label="Изменить все"
+                onChange={(value: string) => {
+                  setAllAmounts(value);
+                  (selectedRepair as Repair).работы.map((work) => {
+                    updateWork(work.id, {
+                      ...work,
+                      количество: value,
+                    });
+                    updateDescription();
+                  });
+                }}
+              />
+            </div>
+          </td>
           <td>Ед. изм.</td>
           <td>Цена</td>
           {(selectedRepair as Repair).работы.length > 1 && <td>Действия</td>}
@@ -43,21 +63,33 @@ export const WorkTable = observer(() => {
           return (
             <tr key={index}>
               <td>
-                <Input
-                  type="radio"
-                  options={workOptions}
-                  value={workOptions.find((option) =>
-                    work["Содержание работ"].includes(option.name)
-                  )}
-                  isCollapsed
-                  isDialogOpen={isRadioOpen}
-                  onChange={(value: InputOption) => {
-                    work["Содержание работ"] = value.name;
-                    work["цена"] =
-                      getWorks(selectedRepairType)[work["Содержание работ"]];
-                    updateDescription();
-                  }}
-                />
+                  <Input
+                    type="radio"
+                    options={workOptions}
+                    value={workOptions.find((option) =>
+                      work["Содержание работ"].includes(option.name)
+                    )}
+                    isCollapsed
+                    isDialogOpen={isRadioOpen}
+                    onChange={(value: InputOption) => {
+                      work["Содержание работ"] = value.name;
+                      work.comment = value.name;
+                      work["цена"] =
+                        getWorks(selectedRepairType)[work["Содержание работ"]];
+                      updateDescription();
+                    }}
+                  />
+                  <Input
+                    type="text"
+                    value={work.comment}
+                    onChange={(value: string) => {
+                      updateWork(work.id, {
+                        ...work,
+                        comment: value,
+                      });
+                      updateDescription();
+                    }}
+                  />
               </td>
               <td className="w-20">
                 {selectedRepairType === "ППР" ? (
@@ -119,26 +151,7 @@ export const WorkTable = observer(() => {
           );
         })}
         <tr>
-          <td></td>
-          <td>
-            <Input
-              type="text"
-              size={4}
-              value={allAmounts}
-              label="Все кол-ва"
-              onChange={(value: string) => {
-                setAllAmounts(value);
-                (selectedRepair as Repair).работы.map((work) => {
-                  updateWork(work.id, {
-                    ...work,
-                    количество: value,
-                  });
-                  updateDescription();
-                });
-              }}
-            />
-          </td>
-          <td colSpan={3}>
+          <td colSpan={100}>
             <button
               className="w-full"
               onClick={() => {

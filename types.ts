@@ -15,6 +15,7 @@ export interface Work {
   единицаИзмерения: MeasurementUnit;
   цена: number;
   количество: string;
+  comment: string;
 }
 
 export interface RepairObject {

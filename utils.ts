@@ -107,14 +107,14 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const objs = repair.объектыРемонта
     .map(
       (obj) =>
-        `${obj.оборудование.join(`, `)} ${obj.comment} в корп. ${obj.корпус
+        `${obj.оборудование.join(`, `)} ${obj.comment || ""} в корп. ${obj.корпус
           .split(" ")[0]
           .replaceAll(/\s[а-яА-Я]/g, "")}`
     )
     .join("; ");
 
   return `Выполнено: ${repair?.работы
-    ?.map((work) => `п. ${work["Содержание работ"]}`)
+    ?.map((work) => `п. ${work.comment || ""}`)
     .join(", ")} (на оборудовании: ${objs}, согласно ${
     type === "ППР"
       ? `прейскуранту № ${prices}`

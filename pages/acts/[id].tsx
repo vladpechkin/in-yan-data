@@ -56,12 +56,12 @@ const Page = observer(() => {
                 <button
                   onClick={() =>
                     writeAct()
-                    // .then(() =>
-                    //   window.open(
-                    //     'https://docs.google.com/spreadsheets/d/1S5nOSGna-covY3ZokHB0VkHwpo6Ybj17Q-jY9XkPpKY/edit#gid=305857577',
-                    //     "_blank"
-                    //   )
-                    // )
+                    .then(() =>
+                      window.open(
+                        'https://docs.google.com/spreadsheets/d/1S5nOSGna-covY3ZokHB0VkHwpo6Ybj17Q-jY9XkPpKY/edit#gid=305857577',
+                        "_blank"
+                      )
+                    )
                   }
                 >
                   Открыть файл
