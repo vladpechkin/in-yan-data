@@ -83,24 +83,7 @@ export const createStore = (): Store => ({
   },
   writeAct(){
     const actPrice = getActPrice(this.selectedAct)
-    console.log({
-      ...this.selectedAct,
-      price: actPrice,
-      priceRub: capitalize(
-        rubles(actPrice * 1.2).toLocaleString(
-          "ru"
-        )
-      ),
-      ndsRub: capitalize(
-        rubles(actPrice * 0.2)
-      ),
-      pprPrice: (this.selectedAct.ППР.ремонты as Repair[])
-        .map((r) => r.сумма)
-        .reduce((partialSum, a) => partialSum + a, 0),
-      otrPrice: (this.selectedAct.ОТР.ремонты as Repair[])
-        .map((r) => r.сумма)
-        .reduce((partialSum, a) => partialSum + a, 0),
-    })
+    
     return fetch("/api/sheet", {
       method: "POST",
       body: JSON.stringify({
