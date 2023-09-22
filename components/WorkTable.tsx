@@ -63,51 +63,47 @@ export const WorkTable = observer(() => {
           return (
             <tr key={index}>
               <td>
-                  <Input
-                    type="radio"
-                    options={workOptions}
-                    value={workOptions.find((option) =>
-                      work["Содержание работ"].includes(option.name)
-                    )}
-                    isCollapsed
-                    isDialogOpen={isRadioOpen}
-                    onChange={(value: InputOption) => {
-                      work["Содержание работ"] = value.name;
-                      work.comment = value.name;
-                      work["цена"] =
-                        getWorks(selectedRepairType)[work["Содержание работ"]];
-                      updateDescription();
-                    }}
-                  />
-                  <Input
-                    type="text"
-                    value={work.comment}
-                    onChange={(value: string) => {
-                      updateWork(work.id, {
-                        ...work,
-                        comment: value,
-                      });
-                      updateDescription();
-                    }}
-                  />
+                <Input
+                  type="radio"
+                  options={workOptions}
+                  value={workOptions.find((option) =>
+                    work["Содержание работ"].includes(option.name)
+                  )}
+                  isCollapsed
+                  isDialogOpen={isRadioOpen}
+                  onChange={(value: InputOption) => {
+                    work["Содержание работ"] = value.name;
+                    work.comment = value.name;
+                    work["цена"] =
+                      getWorks(selectedRepairType)[work["Содержание работ"]];
+                    updateDescription();
+                  }}
+                />
+                <Input
+                  type="text"
+                  value={work.comment}
+                  onChange={(value: string) => {
+                    updateWork(work.id, {
+                      ...work,
+                      comment: value,
+                    });
+                    updateDescription();
+                  }}
+                />
               </td>
               <td className="w-20">
-                {selectedRepairType === "ППР" ? (
-                  work.количество
-                ) : (
-                  <Input
-                    type="text"
-                    size={4}
-                    value={work.количество}
-                    onChange={(value: string) => {
-                      updateWork(work.id, {
-                        ...work,
-                        количество: value,
-                      });
-                      updateDescription();
-                    }}
-                  />
-                )}
+                <Input
+                  type="text"
+                  size={4}
+                  value={work.количество}
+                  onChange={(value: string) => {
+                    updateWork(work.id, {
+                      ...work,
+                      количество: value,
+                    });
+                    updateDescription();
+                  }}
+                />
               </td>
               <td className="w-16">
                 {selectedRepairType === "ППР" ? (
@@ -130,7 +126,6 @@ export const WorkTable = observer(() => {
                 )}
               </td>
               <td>{work["цена"]}</td>
-
               {(selectedRepair as Repair).работы.length > 1 && (
                 <td className="w-20">
                   <button
