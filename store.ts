@@ -5,7 +5,7 @@ import {
   getEmptyWork,
 } from "./consts";
 import { Act, Repair, RepairObject, RepairType, Shift, Work } from "./types";
-import { capitalize, getActPrice } from "./utils";
+import { capitalize, getActPrice, getActSum } from "./utils";
 // @ts-ignore
 import { rubles } from "rubles";
 
@@ -82,7 +82,7 @@ export const createStore = (): Store => ({
       .then(() => alert("Удалено"));
   },
   writeAct(){
-    const actPrice = getActPrice(this.selectedAct)
+    const actPrice = getActSum(this.selectedAct)
     
     return fetch("/api/sheet", {
       method: "POST",
@@ -97,12 +97,6 @@ export const createStore = (): Store => ({
         ndsRub: capitalize(
           rubles(actPrice * 0.2)
         ),
-        pprPrice: (this.selectedAct.ППР.ремонты as Repair[])
-          .map((r) => r.сумма)
-          .reduce((partialSum, a) => partialSum + a, 0),
-        otrPrice: (this.selectedAct.ОТР.ремонты as Repair[])
-          .map((r) => r.сумма)
-          .reduce((partialSum, a) => partialSum + a, 0),
       }),
     })
   },

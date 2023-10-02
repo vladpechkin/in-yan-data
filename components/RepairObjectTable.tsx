@@ -30,6 +30,7 @@ export const RepairObjectTable = observer(() => {
         <tr>
           <td>Корпус</td>
           <td>Оборудование</td>
+          {selectedRepairType === "ППР" && <td>Кол-во</td>}
           {(selectedRepair as Repair).объектыРемонта.length > 1 && (
             <td>Действия</td>
           )}
@@ -56,15 +57,15 @@ export const RepairObjectTable = observer(() => {
             <td>
               <div className="flex">
                 <Input
-                  type="checkbox"
+                  type="radio"
                   options={toOptions(machinery)}
-                  value={toOptions(machinery).filter((machine) =>
+                  value={toOptions(machinery).find((machine) =>
                     object.оборудование.includes(machine.name)
                   )}
-                  onChange={(value: InputOption[]) => {
+                  onChange={(value: InputOption) => {
                     updateRepairObject(object.id, {
                       ...object,
-                      оборудование: value.map(({ name }) => name),
+                      оборудование: value.name,
                     });
                     updateDescription();
                   }}
@@ -72,17 +73,30 @@ export const RepairObjectTable = observer(() => {
                   className="w-4/5"
                 />
                 <Input
-                  value={object.comment}
+                  value={object.комментарий}
                   onChange={(value: string) => {
                     updateRepairObject(object.id, {
                       ...object,
-                      comment: value,
+                      комментарий: value,
                     });
                     updateDescription();
                   }}
                 />
               </div>
             </td>
+            {selectedRepairType === "ППР" && <td>
+              <Input
+                value={object.количество}
+                size={4}
+                onChange={(value: string) => {
+                  updateRepairObject(object.id, {
+                    ...object,
+                    количество: value,
+                  });
+                  updateDescription();
+                }}
+              />
+            </td>}
             {(selectedRepair as Repair).объектыРемонта.length > 1 && (
               <td className="w-20">
                 <button

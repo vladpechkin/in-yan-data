@@ -1,7 +1,12 @@
 import { getEmptyRepair } from "@/consts";
 import { useStore } from "@/pages/_app";
 import { Act, Repair, RepairType } from "@/types";
-import { getRepairPrice } from "@/utils";
+import {
+  getMachineryAmount,
+  getRepairAmount,
+  getRepairPrice,
+  getRepairSum,
+} from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -28,6 +33,7 @@ export const RepairTable: FC<Props> = observer(
               <td>№</td>
               <td>Наименование работ</td>
               <td>Ед. изм.</td>
+              <td>Цена</td>
               <td>Кол-во</td>
               <td>Сумма</td>
               <td>Действия</td>
@@ -38,11 +44,10 @@ export const RepairTable: FC<Props> = observer(
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{repair.описание}</td>
-                <td>{repair.работы[0].единицаИзмерения}</td>
-                <td>
-                  {repair.работы[0].количество}
-                </td>
-                <td>{repair.сумма}</td>
+                <td>шт.</td>
+                <td>{getRepairPrice(repair)}</td>
+                <td>{getMachineryAmount(repair)}</td>
+                <td>{getRepairSum(repair)}</td>
                 <td>
                   <button
                     onClick={() => {

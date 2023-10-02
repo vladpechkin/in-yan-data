@@ -116,8 +116,9 @@ export const getEmptyWork = (): Work => ({
 export const getEmptyRepairObject = (): RepairObject => ({
   id: uuidv4(),
   корпус: "",
-  оборудование: [],
-  comment: ""
+  оборудование: "",
+  комментарий: "",
+  количество: "1"
 });
 
 export const getEmptyRepair = (): Repair => ({

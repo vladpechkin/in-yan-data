@@ -49,39 +49,16 @@ export const getMonthLength = (month: number, year: number) => {
   }
 };
 
-export const editCell = (
-  worksheet: WorkSheet,
-  cell: string,
-  newContents: string
-) => {
-  worksheet.getRange(cell).activate();
-  worksheet.getCurrentCell().setValue(newContents);
-};
-
-export const getRepairPrice = (repair: Repair, type: RepairType) => {
-  let price = 0;
-  const works = getWorks(type);
-  repair.работы.map((work) => (price += works[work["Содержание работ"]]));
-  return price;
-};
-
-export const getRepairAmount = (repair: Repair) =>
-  repair.объектыРемонта
-    ?.map((объектРемонта: RepairObject) =>
-      объектРемонта?.оборудование?.map((оборудование) => оборудование)
-    )
-    .flat().length;
-
 export const getRepairsPrice = (repair: Repair, type: RepairType) =>
   getRepairPrice(repair, type) * getRepairAmount(repair);
 
-export const getRepairTypePrice = (
-  repairType: {
-    наряды: string;
-    ремонты: Repair[];
-  }) => (repairType.ремонты as Repair[])
-.map((r) => r.сумма)
-.reduce((partialSum, a) => partialSum + a, 0)
+export const getRepairTypePrice = (repairType: {
+  наряды: string;
+  ремонты: Repair[];
+}) =>
+  (repairType.ремонты as Repair[])
+    .map((r) => r.сумма)
+    .reduce((partialSum, a) => partialSum + a, 0);
 
 export const getActPrice = (act: Act) =>
   getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
@@ -107,14 +84,14 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
   const objs = repair.объектыРемонта
     .map(
       (obj) =>
-        `${obj.оборудование.join(`, `)} ${obj.comment || ""} в корп. ${obj.корпус
-          .split(" ")[0]
-          .replaceAll(/\s[а-яА-Я]/g, "")}`
+        `${obj.оборудование}${obj.комментарий ? ` ${obj.комментарий}` : ""}, ${
+          obj.количество
+        }шт. в корп. ${obj.корпус.split(" ")[0].replaceAll(/\s[а-яА-Я]/g, "")}`
     )
     .join("; ");
 
   return `Выполнено: ${repair?.работы
-    ?.map((work) => `п. ${work.comment || ""}`)
+    ?.map((work) => `п. ${work.comment || ""}${type === "ОТР" ? `, ${work.количество} ${work.единицаИзмерения}` : ""}`)
     .join(", ")} (на оборудовании: ${objs}, согласно ${
     type === "ППР"
       ? `прейскуранту № ${prices}`
@@ -150,3 +127,39 @@ export const format = (string: string | number) =>
 
 export const capitalize = (word: string) =>
   word.charAt(0).toUpperCase() + word.slice(1);
+
+export const getWorksAmount = (repair: Repair) => {
+  let amount = 0;
+  repair.работы.map((job) => {
+    amount += parseInt(job.количество);
+  });
+  return amount;
+}
+
+export const getMachineryAmount = (repair: Repair) => {
+  let amount = 0;
+  repair.объектыРемонта.map((obj) => {
+    amount += parseInt(obj.количество);
+  });
+  return amount;
+};
+
+export const getRepairAmount = (repair: Repair) => getMachineryAmount(repair) * getWorksAmount(repair);
+
+export const getRepairPrice = (repair: Repair) => {
+  let amount = 0;
+  repair.работы.map((job) => {
+    amount += job.цена * parseInt(job.количество);
+  });
+  return amount;
+};
+
+export const getRepairSum = (repair: Repair) =>
+  getRepairPrice(repair) * getMachineryAmount(repair);
+
+  export const getActSum = (act: Act) => {
+    let sum = 0;
+    act.ППР.ремонты.map(repair => sum += getRepairPrice(repair))
+    act.ОТР.ремонты.map(repair => sum += getRepairPrice(repair))
+    return sum;
+  }

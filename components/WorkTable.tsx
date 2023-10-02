@@ -34,28 +34,32 @@ export const WorkTable = observer(() => {
         </tr>
         <tr>
           <td>Тип работы</td>
-          <td className="w-40">
-            <div className="flex gap-2 items-center">
-              Колво
-              <Input
-                type="text"
-                size={4}
-                value={allAmounts}
-                label="Изменить все"
-                onChange={(value: string) => {
-                  setAllAmounts(value);
-                  (selectedRepair as Repair).работы.map((work) => {
-                    updateWork(work.id, {
-                      ...work,
-                      количество: value,
-                    });
-                    updateDescription();
-                  });
-                }}
-              />
-            </div>
-          </td>
-          <td>Ед. изм.</td>
+          {selectedRepairType === "ОТР" && (
+            <>
+              <td className="w-40">
+                <div className="flex gap-2 items-center">
+                  Колво
+                  <Input
+                    type="text"
+                    size={4}
+                    value={allAmounts}
+                    label="Изменить все"
+                    onChange={(value: string) => {
+                      setAllAmounts(value);
+                      (selectedRepair as Repair).работы.map((work) => {
+                        updateWork(work.id, {
+                          ...work,
+                          количество: value,
+                        });
+                        updateDescription();
+                      });
+                    }}
+                  />
+                </div>
+              </td>
+              <td>Ед. изм.</td>
+            </>
+          )}
           <td>Цена</td>
           {(selectedRepair as Repair).работы.length > 1 && <td>Действия</td>}
         </tr>
@@ -91,40 +95,44 @@ export const WorkTable = observer(() => {
                   }}
                 />
               </td>
-              <td className="w-20">
-                <Input
-                  type="text"
-                  size={4}
-                  value={work.количество}
-                  onChange={(value: string) => {
-                    updateWork(work.id, {
-                      ...work,
-                      количество: value,
-                    });
-                    updateDescription();
-                  }}
-                />
-              </td>
-              <td className="w-16">
-                {selectedRepairType === "ППР" ? (
-                  "шт."
-                ) : (
-                  <Input
-                    type="radio"
-                    options={toOptions(measurementUnits)}
-                    value={toOptions(measurementUnits).find((option) =>
-                      work.единицаИзмерения.includes(option.name)
+              {selectedRepairType === "ОТР" && (
+                <>
+                  <td className="w-20">
+                    <Input
+                      type="text"
+                      size={4}
+                      value={work.количество}
+                      onChange={(value: string) => {
+                        updateWork(work.id, {
+                          ...work,
+                          количество: value,
+                        });
+                        updateDescription();
+                      }}
+                    />
+                  </td>
+                  <td className="w-16">
+                    {selectedRepairType === "ППР" ? (
+                      "шт."
+                    ) : (
+                      <Input
+                        type="radio"
+                        options={toOptions(measurementUnits)}
+                        value={toOptions(measurementUnits).find((option) =>
+                          work.единицаИзмерения.includes(option.name)
+                        )}
+                        onChange={(value: InputOption) => {
+                          updateWork(work.id, {
+                            ...work,
+                            единицаИзмерения: value.name,
+                          });
+                          updateDescription();
+                        }}
+                      />
                     )}
-                    onChange={(value: InputOption) => {
-                      updateWork(work.id, {
-                        ...work,
-                        единицаИзмерения: value.name,
-                      });
-                      updateDescription();
-                    }}
-                  />
-                )}
-              </td>
+                  </td>
+                </>
+              )}
               <td>{work["цена"]}</td>
               {(selectedRepair as Repair).работы.length > 1 && (
                 <td className="w-20">

@@ -18,7 +18,6 @@ interface Props {
 
 export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
   const { selectedAct, setSelectedAct } = useStore();
-  const actPrice = getActPrice(selectedAct);
   return (
     <>
       <div className="flex gap-4">
@@ -48,12 +47,6 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
               });
             }}
           />
-          <Data
-            label="Итого по ППР"
-            value={(selectedAct.ППР.ремонты as Repair[])
-              .map((r) => r.сумма)
-              .reduce((partialSum, a) => partialSum + a, 0)}
-          />
         </section>
         <section className="flex flex-col gap-2 w-full">
           <h3 className="font-semibold">ОТР</h3>
@@ -80,12 +73,6 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
                 },
               })
             }
-          />
-          <Data
-            label="Итого по ОТР"
-            value={(selectedAct.ОТР.ремонты as Repair[])
-              .map((r) => r.сумма)
-              .reduce((partialSum, a) => partialSum + a, 0)}
           />
         </section>
       </div>
@@ -161,13 +148,6 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
           }
         />
       </section>
-      <Row
-        {...[
-          { label: "Итого", value: actPrice },
-          { label: "НДС (20%)", value: actPrice * 0.2 },
-          { label: "Итого с НДС", value: actPrice * 1.2 },
-        ]}
-      />
     </>
   );
 });

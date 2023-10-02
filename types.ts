@@ -21,8 +21,9 @@ export interface Work {
 export interface RepairObject {
   id: string;
   корпус: string;
-  оборудование: Machine[];
-  comment: string
+  оборудование: Machine;
+  комментарий: string,
+  количество: string,
 }
 
 export interface Shift {
