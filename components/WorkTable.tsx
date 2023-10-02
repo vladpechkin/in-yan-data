@@ -37,25 +37,7 @@ export const WorkTable = observer(() => {
           {selectedRepairType === "ОТР" && (
             <>
               <td className="w-40">
-                <div className="flex gap-2 items-center">
                   Колво
-                  <Input
-                    type="text"
-                    size={4}
-                    value={allAmounts}
-                    label="Изменить все"
-                    onChange={(value: string) => {
-                      setAllAmounts(value);
-                      (selectedRepair as Repair).работы.map((work) => {
-                        updateWork(work.id, {
-                          ...work,
-                          количество: value,
-                        });
-                        updateDescription();
-                      });
-                    }}
-                  />
-                </div>
               </td>
               <td>Ед. изм.</td>
             </>

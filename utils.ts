@@ -156,7 +156,7 @@ export const getRepairSum = (repair: Repair) =>
 
   export const getActSum = (act: Act) => {
     let sum = 0;
-    act.ППР.ремонты.map(repair => sum += getRepairPrice(repair))
-    act.ОТР.ремонты.map(repair => sum += getRepairPrice(repair))
+    act.ППР.ремонты.map(repair => sum += getRepairSum(repair))
+    act.ОТР.ремонты.map(repair => sum += getRepairSum(repair))
     return sum;
   }
