@@ -49,9 +49,6 @@ export const getMonthLength = (month: number, year: number) => {
   }
 };
 
-export const getRepairsPrice = (repair: Repair, type: RepairType) =>
-  getRepairPrice(repair, type) * getRepairAmount(repair);
-
 export const getRepairTypePrice = (repairType: {
   наряды: string;
   ремонты: Repair[];

@@ -77,14 +77,8 @@ export const RepairEditor = observer(() => {
         <ul>
           <button
             onClick={() => {
-              let selectedRepairPrice = 0;
-              getSelectedRepair().работы.map((work: Work) => {
-                selectedRepairPrice +=
-                  getWorks(selectedRepairType)[work["Содержание работ"]] *
-                  parseInt(work.количество);
-              });
               setSelectedRepair({
-                сумма: selectedRepairPrice,
+                сумма: getRepairPrice(selectedRepair),
               });
               selectedRepairType
                 ? setSelectedAct({
@@ -92,7 +86,7 @@ export const RepairEditor = observer(() => {
                       ...selectedAct.ППР,
                       стоимость: getRepairPrice(
                         selectedRepair,
-                        selectedRepairType
+                        
                       ),
                     },
                   })
@@ -101,7 +95,7 @@ export const RepairEditor = observer(() => {
                       ...selectedAct.ОТР,
                       стоимость: getRepairPrice(
                         selectedRepair,
-                        selectedRepairType
+                        
                       ),
                     },
                   });
