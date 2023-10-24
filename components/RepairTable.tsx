@@ -25,9 +25,6 @@ export const RepairTable: FC<Props> = observer(
     return (
       <table className="w-full">
         <tbody>
-          <tr>
-            <th colSpan={100}>Ремонты</th>
-          </tr>
           {repairs.length > 0 && (
             <tr>
               <td>№</td>

@@ -1,6 +1,6 @@
 import { prejskuranti } from "@/consts";
-import { Machine, RepairObject, RepairType, Work } from "@/types";
-import { read, utils, WorkSheet, writeFile } from "xlsx";
+import { RepairType } from "@/types";
+import { WorkSheet, utils } from "xlsx";
 import otr from "./public/prices-otr.json";
 import ppr from "./public/prices-ppr.json";
 import { Act, InputOption, Repair } from "./types";
@@ -52,10 +52,11 @@ export const getMonthLength = (month: number, year: number) => {
 export const getRepairTypePrice = (repairType: {
   наряды: string;
   ремонты: Repair[];
-}) =>
-  (repairType.ремонты as Repair[])
-    .map((r) => r.сумма)
-    .reduce((partialSum, a) => partialSum + a, 0);
+}) => {
+  let sum = 0;
+  repairType.ремонты.map((repair) => (sum += getRepairSum(repair)));
+  return sum;
+};
 
 export const getActPrice = (act: Act) =>
   getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР);
@@ -88,7 +89,12 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
     .join("; ");
 
   return `Выполнено: ${repair?.работы
-    ?.map((work) => `п. ${work.comment || ""}${type === "ОТР" ? `, ${work.количество} ${work.единицаИзмерения}` : ""}`)
+    ?.map(
+      (work) =>
+        `п. ${work.comment || ""}${
+          type === "ОТР" ? `, ${work.количество} ${work.единицаИзмерения}` : ""
+        }`
+    )
     .join(", ")} (на оборудовании: ${objs}, согласно ${
     type === "ППР"
       ? `прейскуранту № ${prices}`
@@ -131,7 +137,7 @@ export const getWorksAmount = (repair: Repair) => {
     amount += parseInt(job.количество);
   });
   return amount;
-}
+};
 
 export const getMachineryAmount = (repair: Repair) => {
   let amount = 0;
@@ -141,7 +147,8 @@ export const getMachineryAmount = (repair: Repair) => {
   return amount;
 };
 
-export const getRepairAmount = (repair: Repair) => getMachineryAmount(repair) * getWorksAmount(repair);
+export const getRepairAmount = (repair: Repair) =>
+  getMachineryAmount(repair) * getWorksAmount(repair);
 
 export const getRepairPrice = (repair: Repair) => {
   let amount = 0;
@@ -154,9 +161,7 @@ export const getRepairPrice = (repair: Repair) => {
 export const getRepairSum = (repair: Repair) =>
   getRepairPrice(repair) * getMachineryAmount(repair);
 
-  export const getActSum = (act: Act) => {
-    let sum = 0;
-    act.ППР.ремонты.map(repair => sum += getRepairSum(repair))
-    act.ОТР.ремонты.map(repair => sum += getRepairSum(repair))
-    return sum;
-  }
+export const getActSum = (act: Act) =>
+  getRepairTypePrice(act.ППР) + getRepairTypePrice(act.ОТР)
+
+  export const renderInt = (number: number) => number.toFixed(2).replace('.', ",")
