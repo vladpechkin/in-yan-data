@@ -23,8 +23,8 @@
     "**/*.ts",
     "**/*.tsx",
     "sheet.js",
-    "pages/api/acts/index.js",
-    "pages/api/acts/[id].js"
+    "pages/api/[entityName]/index.js",
+    "pages/api/[entityName]/[id].js"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   fetch(
-    "https://script.google.com/macros/s/AKfycbzKRtBDSD1Ki-uVj9kzD9ANFDcDAvRVnh9kNbkAINm3zCKMMAYQfpv9u75KC3eJe69O/exec",
+    "https://script.google.com/macros/s/AKfycbwcBnuLm9JEYPV38XQiyvZ9bgGz-aN0fiTcavojnxHtVN4ZWx9EkqxA-_RLv0A3SSJX/exec",
     {
       method: "POST",
       body: req.body,

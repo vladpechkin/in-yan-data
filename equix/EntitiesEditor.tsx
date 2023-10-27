@@ -58,6 +58,8 @@ export const EntitiesEditor: FC<Props> = ({
       )
     );
 
+  console.log(entities.map((entity, index) => ({ id: index + 1, ...entity })));
+
   return (
     <Dialog
       isOpen={!!entityName}
@@ -120,17 +122,20 @@ export const EntitiesEditor: FC<Props> = ({
           </table>
         </>
       )}
-      <EntityEditor
-        indexToEdit={indexToEdit}
-        setChangedEntity={setChangedEntity}
-        entityTemplate={entityTemplate}
-        setIndexToEdit={setIndexToEdit}
-        entityKeys={entityKeys}
-        changedEntity={changedEntity}
-        entities={entities}
-        entity={entity}
-        setEntities={setEntities}
-      />
+      {entityName && (
+        <EntityEditor
+          indexToEdit={indexToEdit}
+          setChangedEntity={setChangedEntity}
+          entityTemplate={entityTemplate}
+          setIndexToEdit={setIndexToEdit}
+          entityKeys={entityKeys}
+          changedEntity={changedEntity}
+          entities={entities}
+          entity={entity}
+          setEntities={setEntities}
+          entityName={entityName}
+        />
+      )}
     </Dialog>
   );
 };

@@ -5,7 +5,7 @@ import {
   getEmptyWork,
 } from "./consts";
 import { Act, Repair, RepairObject, RepairType, Shift, Work } from "./types";
-import { capitalize, getActPrice, getActSum } from "./utils";
+import { capitalize, getActSum } from "./utils";
 // @ts-ignore
 import { rubles } from "rubles";
 
@@ -40,6 +40,9 @@ interface Store {
   getSelectedWorks: () => void;
 
   getSelectedRepair: () => void;
+
+  saveEntity: (entityName: string, entityId: number) => void;
+  deleteEntity: (entityName: string, entityId: number) => void;
 }
 
 export const createStore = (): Store => ({
@@ -81,24 +84,40 @@ export const createStore = (): Store => ({
       .then((res) => res.json())
       .then(() => alert("Удалено"));
   },
-  writeAct(){
-    const actPrice = getActSum(this.selectedAct)
-    
+  writeAct() {
+    const actPrice = getActSum(this.selectedAct);
+
     return fetch("/api/sheet", {
       method: "POST",
       body: JSON.stringify({
         ...this.selectedAct,
         price: actPrice,
-        priceRub: capitalize(
-          rubles(actPrice * 1.2).toLocaleString(
-            "ru"
-          )
-        ),
-        ndsRub: capitalize(
-          rubles(actPrice * 0.2)
-        ),
+        priceRub: capitalize(rubles(actPrice * 1.2).toLocaleString("ru")),
+        ndsRub: capitalize(rubles(actPrice * 0.2)),
       }),
+    });
+  },
+
+  saveEntity(entityName, entityId) {
+    fetch(`/api/${entityName}${entityId ? `/${entityId}` : ""}`, {
+      method: entityId ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.selectedAct),
     })
+      .then((res) => res.json())
+      .then(() => alert("Сохранено"));
+  },
+  deleteEntity(entityName, entityId) {
+    fetch(`/api/${entityName}/${entityId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(() => alert("Удалено"));
   },
 
   saveRepair() {
