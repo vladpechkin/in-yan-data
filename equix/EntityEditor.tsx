@@ -84,6 +84,7 @@ export const EntityEditor: FC<Props> = observer(
                 onClick={() => {
                   const confirmed = confirm("Подтвердите удаление");
                   if (confirmed) {
+                    // @ts-ignore
                     deleteEntity(entityName, entity.id);
                     setEntities(filteredEntities);
                     setChangedEntity(entityTemplate);

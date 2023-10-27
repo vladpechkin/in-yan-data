@@ -101,6 +101,7 @@ export const EntitiesEditor: FC<Props> = ({
             <tbody>
               {entityKeys && getEntities().length > 0 ? (
                 getEntities()
+                // @ts-ignore
                   .sort(({ id: idA }, { id: idB }) => idA - idB)
                   .map((entity, entityIndex) => (
                     <tr key={entityIndex}>
