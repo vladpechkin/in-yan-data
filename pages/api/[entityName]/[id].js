@@ -2,7 +2,8 @@ import fsPromises from "fs/promises";
 import path from "path";
 
 export default async function handler(req, res) {
-  const {entityName, id} = req.query
+  let {entityName, id} = req.query;
+  id = +id;
   const dataFilePath = path.join(process.cwd(), `/public/${entityName}.json`);
   try {
     switch (req.method) {
@@ -34,8 +35,6 @@ export default async function handler(req, res) {
       case "DELETE": {
         const fileData = await fsPromises.readFile(dataFilePath);
         let objectData = JSON.parse(fileData);
-
-        const { id } = req.query;
 
         const updatedData = JSON.stringify(
           objectData.filter((x) => x.id !== id)

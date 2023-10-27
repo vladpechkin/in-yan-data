@@ -54,8 +54,8 @@ export const EntitiesEditor: FC<Props> = ({
   const getEntities = () =>
     entities?.filter((entity) =>
       Object.values(entity).find((value) =>
-        value?.toString().includes(searchQuery)
-      )
+        value?.toString().includes(searchQuery),
+      ),
     );
 
   console.log(entities.map((entity, index) => ({ id: index + 1, ...entity })));
@@ -100,21 +100,23 @@ export const EntitiesEditor: FC<Props> = ({
             </thead>
             <tbody>
               {entityKeys && getEntities().length > 0 ? (
-                getEntities().map((entity, entityIndex) => (
-                  <tr key={entityIndex}>
-                    {Object.values(entity).map((value, index) => (
-                      <td
-                        key={index}
-                        onClick={() => {
-                          setChangedEntity(entityTemplate);
-                          setIndexToEdit(entityIndex);
-                        }}
-                      >
-                        {value}
-                      </td>
-                    ))}
-                  </tr>
-                ))
+                getEntities()
+                  .sort(({ id: idA }, { id: idB }) => idA - idB)
+                  .map((entity, entityIndex) => (
+                    <tr key={entityIndex}>
+                      {Object.values(entity).map((value, index) => (
+                        <td
+                          key={index}
+                          onClick={() => {
+                            setChangedEntity(entityTemplate);
+                            setIndexToEdit(entityIndex);
+                          }}
+                        >
+                          {value}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
               ) : (
                 <span className="text-gray-400">Ничего не найдено</span>
               )}
