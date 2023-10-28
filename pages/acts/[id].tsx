@@ -23,13 +23,13 @@ const Page = observer(() => {
 
   useEffect(() => {
     if (id && id !== "new") {
-      fetch(`/api/acts/${id}`, {
+      fetch(`/acts.json`, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-        .then((res) => res && res?.json())
-        .then(setSelectedAct);
+        .then((res) => res?.json())
+        .then(res => setSelectedAct(res.find((act: any) => act.id === id)));
     } else setSelectedAct(getEmptyAct());
   }, [id, setSelectedAct]);
 

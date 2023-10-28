@@ -58,8 +58,6 @@ export const EntitiesEditor: FC<Props> = ({
       ),
     );
 
-  console.log(entities.map((entity, index) => ({ id: index + 1, ...entity })));
-
   return (
     <Dialog
       isOpen={!!entityName}

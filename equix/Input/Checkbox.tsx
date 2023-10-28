@@ -94,7 +94,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         )}
         {renderOptions(
           options?.filter((option) =>
-            option.name.toLowerCase().includes(searchQuery.toLowerCase())
+            option?.name?.toLowerCase()?.includes(searchQuery.toLowerCase())
           )
         )}
       </Dialog>
