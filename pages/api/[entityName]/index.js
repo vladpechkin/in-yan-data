@@ -1,12 +1,12 @@
 import fsPromises from "fs/promises";
 import path from "path";
 
-const dataFilePath = path.join(process.cwd(), "/public/acts.json");
-
 export default async function handler(req, res) {
-  try {
-    switch (req.method) {
-      case "POST": {
+  let {entityName, id} = req.query;
+  id = +id;
+  const dataFilePath = path.join(process.cwd(), `/public/${entityName}.json`);
+
+      if (req.method === "POST") {
         const fileData = await fsPromises.readFile(dataFilePath);
         const objectData = JSON.parse(fileData);
 
@@ -21,7 +21,4 @@ export default async function handler(req, res) {
         break;
       }
     }
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
 }

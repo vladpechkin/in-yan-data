@@ -41,7 +41,7 @@ interface Store {
 
   getSelectedRepair: () => void;
 
-  saveEntity: (entityName: string, entityId: number) => void;
+  saveEntity: (entityName: string, entityId: number, entity: object) => void;
   deleteEntity: (entityName: string, entityId: number) => void;
 }
 
@@ -98,13 +98,13 @@ export const createStore = (): Store => ({
     });
   },
 
-  saveEntity(entityName, entityId) {
+  saveEntity(entityName, entityId, entity) {
     fetch(`/api/${entityName}${entityId ? `/${entityId}` : ""}`, {
       method: entityId ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.selectedAct),
+      body: JSON.stringify(entity),
     })
       .then((res) => res.json())
       .then(() => alert("Сохранено"));

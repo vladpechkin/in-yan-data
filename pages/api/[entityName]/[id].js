@@ -3,7 +3,7 @@ import path from "path";
 
 export default async function handler(req, res) {
   let {entityName, id} = req.query;
-  id = +id;
+  if (entityName !== "acts") id = +id;
   const dataFilePath = path.join(process.cwd(), `/public/${entityName}.json`);
   try {
     switch (req.method) {
@@ -27,8 +27,8 @@ export default async function handler(req, res) {
         }
 
         objectData = objectData.map((x) => (x.id === id ? body : x));
-
-        await fsPromises.writeFile(dataFilePath, JSON.stringify(objectData));
+        console.log(objectData);
+        await fsPromises.writeFile(dataFilePath, JSON.stringify(objectData)); 
         res.status(200).json("PUT");
         break;
       }
