@@ -31,12 +31,12 @@ export const EntityEditor: FC<Props> = observer(
     entityName,
     setEntities,
   }) => {
-    const {saveEntity, deleteEntity} = useStore();
+    const { saveEntity, deleteEntity } = useStore();
 
     let changedValue: any = {};
 
     const filteredEntities = entities.filter(
-      (_, index) => index !== indexToEdit
+      (_, index) => index !== indexToEdit,
     );
 
     return (
@@ -69,7 +69,12 @@ export const EntityEditor: FC<Props> = observer(
                 onClick={() => {
                   // @ts-ignore
                   saveEntity(entityName, entity.id, changedEntity);
-                  setEntities([...filteredEntities, changedEntity]);
+
+                  setEntities([
+                    ...filteredEntities,
+                    { id: filteredEntities.length + 1, ...changedEntity },
+                  ]);
+
                   setChangedEntity(entityTemplate);
                   setIndexToEdit(null);
                 }}
@@ -100,5 +105,5 @@ export const EntityEditor: FC<Props> = observer(
         </menu>
       </Dialog>
     );
-  }
+  },
 );
