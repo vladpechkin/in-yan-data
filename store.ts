@@ -41,7 +41,11 @@ interface Store {
 
   getSelectedRepair: () => void;
 
-  saveEntity: (entityName: string, entityId: number) => void;
+  saveEntity: (
+    entityName: string,
+    entityId: number,
+    newEntity?: object,
+  ) => void;
   deleteEntity: (entityName: string, entityId: number) => void;
 }
 
@@ -98,13 +102,13 @@ export const createStore = (): Store => ({
     });
   },
 
-  saveEntity(entityName, entityId) {
+  saveEntity(entityName, entityId, newEntity) {
     fetch(`/api/${entityName}${entityId ? `/${entityId}` : ""}`, {
       method: entityId ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.selectedAct),
+      body: JSON.stringify(newEntity || this.selectedAct),
     })
       .then((res) => res.json())
       .then(() => alert("Сохранено"));
@@ -123,12 +127,12 @@ export const createStore = (): Store => ({
   saveRepair() {
     if (this.selectedRepairType) {
       const index = this.selectedAct[this.selectedRepairType].ремонты.findIndex(
-        (x) => x.id === this.selectedRepair?.id
+        (x) => x.id === this.selectedRepair?.id,
       );
 
       Object.assign(
         this.selectedAct[this.selectedRepairType].ремонты[index],
-        this.selectedRepair
+        this.selectedRepair,
       );
     }
   },
@@ -144,7 +148,7 @@ export const createStore = (): Store => ({
   },
   updateRepairObject(id, newObject) {
     const index = this.selectedRepair?.объектыРемонта.findIndex(
-      (x) => x.id === id
+      (x) => x.id === id,
     );
     if (this.selectedRepair && index !== undefined) {
       this.selectedRepair.объектыРемонта[index] = newObject;
@@ -169,7 +173,7 @@ export const createStore = (): Store => ({
   deleteWork(id) {
     if (this.selectedRepair) {
       this.selectedRepair.работы = this.selectedRepair.работы.filter(
-        (x) => x.id !== id
+        (x) => x.id !== id,
       );
     }
   },
@@ -186,7 +190,7 @@ export const createStore = (): Store => ({
   deleteShift(id) {
     if (this.selectedRepair) {
       this.selectedRepair.смены = this.selectedRepair.смены.filter(
-        (x) => x.id !== id
+        (x) => x.id !== id,
       );
     }
   },

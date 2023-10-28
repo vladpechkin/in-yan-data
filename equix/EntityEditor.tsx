@@ -67,7 +67,8 @@ export const EntityEditor: FC<Props> = observer(
             <li>
               <button
                 onClick={() => {
-                  saveEntity(entityName, indexToEdit);
+                  // @ts-ignore
+                  saveEntity(entityName, entity.id, changedEntity);
                   setEntities([...filteredEntities, changedEntity]);
                   setChangedEntity(entityTemplate);
                   setIndexToEdit(null);
