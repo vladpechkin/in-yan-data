@@ -19,7 +19,7 @@ export const EntitiesEditor: FC<Props> = ({
   const router = useRouter();
 
   const [entities, setEntities] = useState<Object[]>([]);
-  const [indexToEdit, setIndexToEdit] = useState<number | null>(null);
+  const [idToEdit, setIdToEdit] = useState<number | null>(null);
 
   const changeableKeys = entityName && getChangeableKeys(entityName as string);
 
@@ -43,19 +43,20 @@ export const EntitiesEditor: FC<Props> = ({
   }, [router, entityName]);
 
   useEffect(() => {
-    if (typeof indexToEdit === "number" && indexToEdit < entities.length) {
-      setEntity(entities[indexToEdit]);
-      setChangedEntity(entities[indexToEdit]);
+    if (typeof idToEdit === "number" && idToEdit < entities.length) {
+      // @ts-ignore
+      setEntity(entities.find(entity => entity.id === idToEdit));
+      setChangedEntity(entities[idToEdit]);
     }
-  }, [indexToEdit, entities]);
+  }, [idToEdit, entities]);
 
   const [searchQuery, setSearchQuery] = useState("");
 
   const getEntities = () =>
     entities?.filter((entity) =>
       Object.values(entity).find((value) =>
-        value?.toString().includes(searchQuery),
-      ),
+        value?.toString().includes(searchQuery)
+      )
     );
 
   return (
@@ -83,7 +84,7 @@ export const EntitiesEditor: FC<Props> = ({
                     className="w-full"
                     onClick={() => {
                       setEntity(entityTemplate);
-                      setIndexToEdit(entities.length);
+                      setIdToEdit(entities.length);
                     }}
                   >
                     Добавить
@@ -92,28 +93,33 @@ export const EntitiesEditor: FC<Props> = ({
               </tr>
               <tr>
                 {entityKeys.map((key, index) => (
-                  <td key={index}>{key}</td>
+                  <td key={index}>{key === "id" ? "№" : key}</td>
                 ))}
+                <td>Действия</td>
               </tr>
             </thead>
             <tbody>
               {entityKeys && getEntities().length > 0 ? (
                 getEntities()
-                // @ts-ignore
+                  // @ts-ignore
                   .sort(({ id: idA }, { id: idB }) => idA - idB)
                   .map((entity, entityIndex) => (
                     <tr key={entityIndex}>
-                      {Object.values(entity).map((value, index) => (
-                        <td
-                          key={index}
+                      {entityKeys.map((key, index) => (
+                        // @ts-ignore
+                        <td key={index}>{entity[key]}</td>
+                      ))}
+                      <td>
+                        <button
                           onClick={() => {
                             setChangedEntity(entityTemplate);
-                            setIndexToEdit(entityIndex);
+                            // @ts-ignore
+                            setIdToEdit(entity.id - 3);
                           }}
                         >
-                          {value}
-                        </td>
-                      ))}
+                          Изменить
+                        </button>
+                      </td>
                     </tr>
                   ))
               ) : (
@@ -125,10 +131,10 @@ export const EntitiesEditor: FC<Props> = ({
       )}
       {entityName && (
         <EntityEditor
-          indexToEdit={indexToEdit}
+          indexToEdit={idToEdit}
           setChangedEntity={setChangedEntity}
           entityTemplate={entityTemplate}
-          setIndexToEdit={setIndexToEdit}
+          setIndexToEdit={setIdToEdit}
           entityKeys={entityKeys}
           changedEntity={changedEntity}
           entities={entities}

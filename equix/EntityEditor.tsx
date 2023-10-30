@@ -36,7 +36,7 @@ export const EntityEditor: FC<Props> = observer(
     let changedValue: any = {};
 
     const filteredEntities = entities.filter(
-      (_, index) => index !== indexToEdit,
+      (_, index) => index !== indexToEdit
     );
 
     return (
@@ -46,22 +46,27 @@ export const EntityEditor: FC<Props> = observer(
           setChangedEntity(entityTemplate);
           setIndexToEdit(null);
         }}
-        title="Редактировать"
+        title={`Редактирование ${
+          changedEntity.id ? `№${changedEntity.id}` : ""
+        }`}
       >
-        {entityKeys.map((key, index) => (
-          <Input
-            label={key}
-            key={index}
-            value={changedEntity[key]}
-            onChange={(value: any) => {
-              changedValue[key] = value;
-              setChangedEntity((prevState: any) => ({
-                ...prevState,
-                ...changedValue,
-              }));
-            }}
-          />
-        ))}
+        {entityKeys.map(
+          (key, index) =>
+            key !== "id" && (
+              <Input
+                label={key}
+                key={index}
+                value={changedEntity[key]}
+                onChange={(value: any) => {
+                  changedValue[key] = value;
+                  setChangedEntity((prevState: any) => ({
+                    ...prevState,
+                    ...changedValue,
+                  }));
+                }}
+              />
+            )
+        )}
         <menu className="flex gap-4">
           {!areEntitiesEqual(entity, changedEntity) && (
             <li>
@@ -105,5 +110,5 @@ export const EntityEditor: FC<Props> = observer(
         </menu>
       </Dialog>
     );
-  },
+  }
 );

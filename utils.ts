@@ -24,7 +24,7 @@ export const areEntitiesEqual = (x: any, y: any): boolean => {
 export const getChangeableKeys = (entityName: string) => {
   switch (entityName) {
     case "employees":
-      return ["Ф.И.О.", "Должность", "Компания"];
+      return ["id","Ф.И.О.", "Должность", "Компания"];
     case "buildings":
       return ["Код", "Наименование", "Зона"];
     case "productions":
