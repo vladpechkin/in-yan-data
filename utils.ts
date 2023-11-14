@@ -129,7 +129,7 @@ export const format = (string: string | number) =>
     .replace("₽", "");
 
 export const capitalize = (word: string) =>
-  word.charAt(0).toUpperCase() + word.slice(1);
+  !word ? '' : word.charAt(0).toUpperCase() + word.slice(1);
 
 export const getWorksAmount = (repair: Repair) => {
   let amount = 0;
