@@ -38,7 +38,7 @@ interface Props {
 
 export const Layout: FC<Props> = ({ children, className }) => {
   const groups = [...new Set(routes.map((route) => route.group))].filter(
-    (x) => !!x
+    (x) => !!x,
   );
 
   const router = useRouter();
@@ -48,7 +48,7 @@ export const Layout: FC<Props> = ({ children, className }) => {
   }, [router]);
 
   const [selectedEntityName, setSelectedEntityName] = useState<string | null>(
-    null
+    null,
   );
 
   return (
@@ -60,7 +60,8 @@ export const Layout: FC<Props> = ({ children, className }) => {
           </Link>
           <ul className="flex flex-col gap-4">
             {routes.map(
-              (route) => !route.group && <NavItem key={route.name} {...route} />
+              (route) =>
+                !route.group && <NavItem key={route.name} {...route} />,
             )}
             {groups.map((group) => (
               <li key={group} className="w-full">
@@ -79,12 +80,18 @@ export const Layout: FC<Props> = ({ children, className }) => {
                                 : undefined
                             }
                           />
-                        )
+                        ),
                     )}
                   </ul>
                 </Details>
               </li>
             ))}
+
+            <li>
+              <a download="errors.json" href="/errors.json">
+                Скачать лог-файл
+              </a>
+            </li>
           </ul>
         </nav>
         <main
