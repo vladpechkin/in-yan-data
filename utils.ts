@@ -99,7 +99,7 @@ export const getRepairDescription = (repair: Repair, type: RepairType) => {
     type === "ППР"
       ? `прейскуранту № ${prices}`
       : "прейскуранту работ по оперативному (текущему) и аварийному ремонту "
-  } приложения №${type === "ППР" ? 4 : 5}).`.replaceAll("  ", " ");
+  } приложения №${type === "ППР" ? 4 : 5}; Доля пр-ва: ${repair.доля}%)`.replaceAll("  ", " ");
 };
 
 export const getWorks = (type: RepairType) =>
@@ -155,7 +155,7 @@ export const getRepairPrice = (repair: Repair) => {
   repair.работы.map((job) => {
     amount += job.цена * parseInt(job.количество);
   });
-  return amount;
+  return (amount / 100) * repair.доля;
 };
 
 export const getRepairSum = (repair: Repair) =>

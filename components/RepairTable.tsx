@@ -6,6 +6,7 @@ import {
   getRepairAmount,
   getRepairPrice,
   getRepairSum,
+  renderInt,
 } from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
@@ -42,9 +43,9 @@ export const RepairTable: FC<Props> = observer(
                 <td>{index + 1}</td>
                 <td>{repair.описание}</td>
                 <td>шт.</td>
-                <td>{getRepairPrice(repair)}</td>
+                <td>{renderInt(getRepairPrice(repair))}</td>
                 <td>{getMachineryAmount(repair)}</td>
-                <td>{getRepairSum(repair)}</td>
+                <td>{renderInt(getRepairSum(repair))}</td>
                 <td>
                   <button
                     onClick={() => {

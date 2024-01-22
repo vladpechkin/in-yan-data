@@ -2,14 +2,10 @@ import { Dialog } from "@/equix/Dialog";
 import { Input } from "@/equix/Input";
 import { areaOptions } from "@/options";
 import { useStore } from "@/pages/_app";
-import { InputOption, Work } from "@/types";
-import {
-  getRepairDescription,
-  getRepairPrice,
-  getWorks
-} from "@/utils";
+import { InputOption } from "@/types";
+import { getRepairDescription, getRepairPrice } from "@/utils";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RepairObjectTable } from "./RepairObjectTable";
 import { ShiftTable } from "./ShiftTable";
 import { WorkTable } from "./WorkTable";
@@ -27,11 +23,13 @@ export const RepairEditor = observer(() => {
     getSelectedRepair,
   } = useStore();
 
+  const [доля, установитьДолю] = useState(selectedRepair.доля.toString());
+
   useEffect(() => {
     setSelectedRepair({
       описание: getRepairDescription(selectedRepair, selectedRepairType),
     });
-  }, []);
+  }, [доля]);
 
   return (
     <Dialog
@@ -47,7 +45,7 @@ export const RepairEditor = observer(() => {
           isCollapsed
           options={areaOptions}
           value={areaOptions.find(
-            (option) => option.name === selectedRepair.зона
+            (option) => option.name === selectedRepair.зона,
           )}
           onChange={(value: InputOption) =>
             setSelectedRepair({ зона: value.name })
@@ -55,12 +53,19 @@ export const RepairEditor = observer(() => {
         />
         <Input
           label="Доля пр-ва, %"
-          size={2}
+          size={3}
           className="self-start"
-          value={selectedRepair.доля.toString()}
-          onChange={(value: string) =>
-            setSelectedRepair({ доля: parseInt(value) })
-          }
+          value={доля}
+          onChange={(value: string) => {
+            value =
+              value
+                .trim()
+                .match(/(,|\.|\d)/g)
+                ?.join("") || "";
+
+            установитьДолю(value);
+            setSelectedRepair({ доля: parseFloat(value.replace(/,/g, ".")) });
+          }}
         />
       </div>
       {selectedRepair.зона && <RepairObjectTable />}
@@ -70,9 +75,7 @@ export const RepairEditor = observer(() => {
           <WorkTable />
         </>
       )}
-      {selectedRepair.работы[0]["Содержание работ"] && (
-        selectedRepair.описание
-      )}
+      {selectedRepair.работы[0]["Содержание работ"] && selectedRepair.описание}
       <menu className="flex gap-4 mt-auto">
         <ul>
           <button
@@ -84,19 +87,13 @@ export const RepairEditor = observer(() => {
                 ? setSelectedAct({
                     ППР: {
                       ...selectedAct.ППР,
-                      стоимость: getRepairPrice(
-                        selectedRepair,
-                        
-                      ),
+                      стоимость: getRepairPrice(selectedRepair),
                     },
                   })
                 : setSelectedAct({
                     ОТР: {
                       ...selectedAct.ОТР,
-                      стоимость: getRepairPrice(
-                        selectedRepair,
-                        
-                      ),
+                      стоимость: getRepairPrice(selectedRepair),
                     },
                   });
               saveRepair();
