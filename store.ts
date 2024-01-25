@@ -68,25 +68,24 @@ export const createStore = (): Store => ({
   },
 
   saveAct(method) {
-    fetch(`/api/acts${method === "PUT" ? `/${this.selectedAct.id}` : ""}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
+    return fetch(
+      `/api/acts${method === "PUT" ? `/${this.selectedAct.id}` : ""}`,
+      {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.selectedAct),
       },
-      body: JSON.stringify(this.selectedAct),
-    })
-      .then((res) => res.json())
-      .then(() => alert("Сохранено"));
+    );
   },
   deleteAct() {
-    fetch(`/api/acts/${this.selectedAct.id}`, {
+    return fetch(`/api/acts/${this.selectedAct.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then(() => alert("Удалено"));
+    });
   },
   writeAct() {
     const actPrice = getActSum(this.selectedAct);

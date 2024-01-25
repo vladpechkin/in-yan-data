@@ -11,12 +11,9 @@ export default async function handler(req, res) {
         }
     }
 
-  const response = await fetch(
+  await fetch(
     "https://script.google.com/macros/s/AKfycbwHFmLkJHbA3xFhK0iJBgMyC55Mx3-oQg6JebFSijqHIUqamxTDv9j81uOX8C7sp8R-/exec",
-    {
-      method: "POST",
-      body: JSON.stringify(body),
-    },
+    { method: "POST", body: JSON.stringify(body) },
   );
 
   res.status(200).json("Executed");
