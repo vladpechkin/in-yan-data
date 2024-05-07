@@ -3,7 +3,7 @@ import { DateInput } from "@/equix/Input/Date";
 import { productionOptions } from "@/options";
 import { useStore } from "@/pages/_app";
 import { InputOption, RepairType } from "@/types";
-import { capitalize, getActSum, getRepairTypePrice, renderInt, toOptions } from "@/utils";
+import { getActSum, getRepairTypePrice, renderInt, toOptions } from "@/utils";
 import { observer } from "mobx-react";
 import { FC } from "react";
 import { Input } from "../equix/Input";
@@ -105,7 +105,7 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
           label="Состояние"
           options={toOptions(actStates)}
           value={toOptions(actStates).find(
-            (option) => option.name === selectedAct.состояние
+            (option) => option.name === selectedAct.состояние,
           )}
           minOptions={1}
           onChange={(value: InputOption) => {
@@ -125,7 +125,7 @@ export const EntryEditor: FC<Props> = observer(({ openRepairEditor }) => {
           value={
             selectedAct.производство
               ? productionOptions.find((option) =>
-                  option.name.includes(selectedAct.производство)
+                  option.name.includes(selectedAct.производство),
                 )
               : undefined
           }

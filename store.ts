@@ -125,14 +125,11 @@ export const createStore = (): Store => ({
 
   saveRepair() {
     if (this.selectedRepairType) {
-      const index = this.selectedAct[this.selectedRepairType].ремонты.findIndex(
-        (x) => x.id === this.selectedRepair?.id,
+      const ремонт = this.selectedAct[this.selectedRepairType].ремонты.find(
+        ({ id }) => id === this.selectedRepair?.id,
       );
 
-      Object.assign(
-        this.selectedAct[this.selectedRepairType].ремонты[index],
-        this.selectedRepair,
-      );
+      if (ремонт) Object.assign(ремонт, this.selectedRepair);
     }
   },
   deleteRepair(id) {
